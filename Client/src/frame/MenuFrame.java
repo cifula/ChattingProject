@@ -10,6 +10,7 @@ import java.awt.CardLayout;
 import java.awt.Color;
 
 import javax.swing.JTextField;
+import javax.swing.JTextPane;
 
 public class MenuFrame extends MainFrame {
 	
@@ -25,7 +26,6 @@ public class MenuFrame extends MainFrame {
 	
 
 	private JPanel contentPane;
-	private JTextField textField;
 	
 	public MenuFrame() {
 		contentPane = new JPanel();
@@ -55,9 +55,8 @@ public class MenuFrame extends MainFrame {
 		contentPane.add(scrollPane);
 		scrollPane.setBounds(80, 0, 400, 800);
 		
-		textField = new JTextField();
-		scrollPane.setViewportView(textField);
-		textField.setColumns(10);
+		JTextPane textPane = new JTextPane();
+		scrollPane.setViewportView(textPane);
 		
 
 

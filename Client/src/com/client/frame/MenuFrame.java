@@ -1,5 +1,6 @@
-package frame;
+package com.client.frame;
 
+import javax.swing.DefaultListModel;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JLabel;
@@ -11,6 +12,10 @@ import java.awt.Color;
 
 import javax.swing.JTextField;
 import javax.swing.JTextPane;
+import javax.swing.JSeparator;
+import javax.swing.JList;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
 
 public class MenuFrame extends MainFrame {
 	
@@ -30,6 +35,8 @@ public class MenuFrame extends MainFrame {
 	public MenuFrame() {
 		contentPane = new JPanel();
 		contentPane.setBackground(new Color(249, 224, 0));
+		setContentPane(contentPane);
+		contentPane.setLayout(null);
 		
 //		로고 이미지
 		ImageIcon logoIcon = new ImageIcon("./image/logo.png");
@@ -48,18 +55,39 @@ public class MenuFrame extends MainFrame {
 		plusButton.setBackground(new Color(249, 224, 0));
 		plusButton.setBorderPainted(false);
 
-		setContentPane(contentPane);
-		contentPane.setLayout(null);
 		
 		JScrollPane scrollPane = new JScrollPane();
 		contentPane.add(scrollPane);
 		scrollPane.setBounds(80, 0, 400, 800);
 		
-		JTextPane textPane = new JTextPane();
-		scrollPane.setViewportView(textPane);
+		JList list = new JList();
+		list.addMouseListener(new MouseAdapter() {
+			@Override
+			public void mouseClicked(MouseEvent e) {
+			}
+		});
+		scrollPane.setViewportView(list);
 		
+		DefaultListModel<String> ls = new DefaultListModel<>();
+		
+		ls.addElement("박성진");
+		ls.addElement("aaa");
+		
+		list.addMouseListener(new MouseAdapter() {
+			@Override
+			public void mouseClicked(MouseEvent e) {
+				if(e.getClickCount() == 2) {
+					String selectedValue = (String) list.getSelectedValue();
+					
+					System.out.println(selectedValue);
+				}
+			}
+		});
+		
+		list.setModel(ls);
+
+	
 
 
 	}
-
 }

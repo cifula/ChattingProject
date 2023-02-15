@@ -1,4 +1,4 @@
-package frame;
+package com.client.frame;
 
 import java.awt.Image;
 import javax.swing.ImageIcon;
@@ -8,6 +8,9 @@ import javax.swing.JTextField;
 import javax.swing.SwingConstants;
 import java.awt.Color;
 import javax.swing.border.CompoundBorder;
+
+import com.client.ClientController;
+
 import javax.swing.JButton;
 import java.awt.Font;
 import java.awt.event.MouseAdapter;

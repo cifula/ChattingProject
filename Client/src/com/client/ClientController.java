@@ -1,11 +1,16 @@
-package frame;
+package com.client;
+
+import com.client.frame.LoginFrame;
+import com.client.frame.MainFrame;
 
 public class ClientController {
 	
 	private static ClientController instance;
 	private static MainFrame frame;
 	
-	private ClientController() {}
+	private ClientController() {
+		frame = LoginFrame.getInstance();
+	}
 	
 	public static ClientController getInstance() {
 		if(instance == null) {
@@ -19,9 +24,7 @@ public class ClientController {
 		this.frame = frame;
 	}
 	
-
-	public void run() {
+	public static void run() {
 		frame.setVisible(true);
 	}
-
 }

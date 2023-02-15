@@ -32,14 +32,14 @@ public class MenuFrame extends MainFrame {
 		contentPane.setBackground(new Color(249, 224, 0));
 		
 //		로고 이미지
-		ImageIcon logoIcon = new ImageIcon("C:\\junil\\seongjin\\workspace\\Practice\\src\\test2\\client\\logo.png");
+		ImageIcon logoIcon = new ImageIcon("./image/logo.png");
 		ImageIcon resizedLogoIcon = new ImageIcon(logoIcon.getImage().getScaledInstance(40, 40, Image.SCALE_SMOOTH));
 		JLabel logoLabel = new JLabel(resizedLogoIcon);
 		contentPane.add(logoLabel);
 		logoLabel.setBounds(20, 25, 40, 40);
 		
 //		플러스 버튼
-		ImageIcon plusbuttonIcon = new ImageIcon("C:\\junil\\seongjin\\workspace\\Practice\\src\\test2\\client\\plusbutton.png");
+		ImageIcon plusbuttonIcon = new ImageIcon("./image/plusbutton.png");
 		ImageIcon resizedplusbuttonIcon = new ImageIcon(plusbuttonIcon.getImage().getScaledInstance(20, 20, Image.SCALE_SMOOTH));
 		JButton plusButton = new JButton(resizedplusbuttonIcon);
 		plusButton.setForeground(new Color(255, 255, 255));

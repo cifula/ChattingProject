@@ -39,14 +39,14 @@ public class LoginFrame extends MainFrame {
 		
 
 //		로고 이미지
-		ImageIcon logoIcon = new ImageIcon("C:\\junil\\seongjin\\workspace\\Practice\\src\\test2\\client\\logo.png");
+		ImageIcon logoIcon = new ImageIcon("./image/logo.png");
 		ImageIcon resizedLogoIcon = new ImageIcon(logoIcon.getImage().getScaledInstance(80, 80, Image.SCALE_SMOOTH));
 		JLabel logoLabel = new JLabel(resizedLogoIcon);
 		contentPane.add(logoLabel);
 		logoLabel.setBounds(200, 200, 80, 80);
 		
 //		시작하기 버튼 이미지
-		ImageIcon loginbuttonIcon = new ImageIcon("C:\\junil\\seongjin\\workspace\\Practice\\src\\test2\\client\\loginbutton.png");
+		ImageIcon loginbuttonIcon = new ImageIcon("./image/loginbutton.png");
 		ImageIcon resizedLoginbuttonIcon = new ImageIcon(loginbuttonIcon.getImage().getScaledInstance(280, 40, Image.SCALE_SMOOTH));
 		
 		

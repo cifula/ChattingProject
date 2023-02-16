@@ -15,8 +15,9 @@ public class MainFrame extends JFrame {
 		LoginPanel loginPanel = LoginPanel.getInstance();
 		MenuPanel menuPanel = MenuPanel.getInstance();
 		
-
-		setContentPane(loginPanel);			
+		
+//		setContentPane(loginPanel);			
+		setContentPane(menuPanel);			
 	
 
 	}

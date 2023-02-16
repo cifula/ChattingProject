@@ -1,13 +1,10 @@
 package com.client.dto;
 
-
-import java.net.Socket;
-
 import lombok.AllArgsConstructor;
 import lombok.Data;
-@Data
+
 @AllArgsConstructor
-public class userDto { //유저 
+@Data
+public class JoinReqDto {
 	private String username;
-	private Socket connectedsocket;
 }

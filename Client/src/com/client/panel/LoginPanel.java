@@ -18,6 +18,10 @@ import javax.swing.JPanel;
 import javax.swing.JTextField;
 import javax.swing.SwingConstants;
 
+import lombok.AllArgsConstructor;
+import lombok.Data;
+@Data
+@AllArgsConstructor
 public class LoginPanel extends InitPanel {
 	
 	private static LoginPanel instance;
@@ -43,7 +47,8 @@ public class LoginPanel extends InitPanel {
 	private CardLayout mainCard;
 	private JPanel contentPane;
 	private JTextField usernameField;
-
+	
+	
 	private LoginPanel() {
 		mainCard = new CardLayout();
 		setLayout(mainCard);
@@ -103,6 +108,8 @@ public class LoginPanel extends InitPanel {
 		usernameField.setBounds(100, 380, 280, 45);
 		contentPane.add(usernameField);
 		usernameField.setColumns(10);
+		
+		
 
 	}
 	

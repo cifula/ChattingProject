@@ -22,7 +22,7 @@ public class ChatroomFrame extends InitPanel {
 	public ChatroomFrame() {
 		contentPane = new JPanel();
 
-		setCont entPane(contentPane);
+		setContentPane(contentPane);
 		
 	}
 

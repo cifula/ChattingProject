@@ -1,4 +1,4 @@
-package MainServer;
+
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -37,10 +37,12 @@ public class ServerApp {
 		ServerSocket serverSocket = null;
 		
 		try {
+			System.out.println("서버 실행");
 			serverSocket = new ServerSocket(1111);
 			
 			while(true) {
 				Socket socket = serverSocket.accept();
+				System.out.println(socket.getPort() + "님이 접속되었니다.");
 				ConnectedSocket connectedSocket = new ConnectedSocket(socket);
 				connectedSocket.start();
 				

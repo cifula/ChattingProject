@@ -10,9 +10,8 @@ import lombok.Data;
 
 @AllArgsConstructor
 @Data
-public class roomdto { //만들어질 방
-	private int roomnumber=0;
+public class MakeRespDto { //만들어질 방
 	private String roomname;
-	private List<userDto> userDto = new ArrayList<>();
+
 	
 }

@@ -4,9 +4,7 @@ import java.awt.EventQueue;
 
 import com.client.frame.MainFrame;
 
-
-
-public class ChattingApplication {
+public class ClientApplication {
 	
 	public static void main(String[] args) {
 		Runnable runnable = new Runnable() {
@@ -14,7 +12,7 @@ public class ChattingApplication {
 			public void run() {
 				try {
 					
-					MainFrame frame = new MainFrame();
+					MainFrame frame = MainFrame.getInstance();
 					frame.setVisible(true);
 					
 				} catch (Exception e) {

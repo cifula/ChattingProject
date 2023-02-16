@@ -1,22 +1,66 @@
 package com.client.frame;
 
+import java.awt.CardLayout;
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.InputStreamReader;
+import java.net.Socket;
+import java.net.UnknownHostException;
+
 import javax.swing.JFrame;
 
 import com.client.panel.LoginPanel;
-import com.client.panel.MenuPanel;
+import com.client.panel.MainPanel;
+import com.client.panel.PanelController;
+
+import lombok.Getter;
 
 public class MainFrame extends JFrame {
-
+	private static MainFrame instance;
+	private Socket socket;
+	private InputStream inputStream;
+	
+	public static MainFrame getInstance() {
+		if(instance == null) {
+			instance = new MainFrame();
+		}
+		return instance;
+	}
+	
 	public MainFrame() {
+		String ip = "127.0.0.1";
+		int port = 9090;
+		
+		try {
+			socket = new Socket(ip, port);
+			inputStream = socket.getInputStream();
+			BufferedReader in = new BufferedReader(new InputStreamReader(inputStream));
+			
+//			setContentPane(LoginPanel.getInstance());
+			setContentPane(MainPanel.getInstance());
+		
+
+			
+		} catch (UnknownHostException e) {
+			e.printStackTrace();
+			
+		} catch (IOException e) {
+			e.printStackTrace();
+			
+		}
+		
+		
+		
+		
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		setBounds(100, 100, 480, 800);
 		
 		
-		LoginPanel loginPanel = LoginPanel.getInstance();
-		MenuPanel menuPanel = MenuPanel.getInstance();
 		
-
-		setContentPane(loginPanel);			
+		
+		
+		
 	
 
 	}

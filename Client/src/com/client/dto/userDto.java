@@ -1,4 +1,4 @@
-package dto;
+package com.client.dto;
 
 import java.net.Socket;
 

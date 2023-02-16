@@ -18,6 +18,8 @@ import javax.swing.JPanel;
 import javax.swing.JTextField;
 import javax.swing.SwingConstants;
 
+import com.client.frame.MainFrame;
+
 public class LoginPanel extends InitPanel {
 	
 	private static LoginPanel instance;
@@ -34,32 +36,17 @@ public class LoginPanel extends InitPanel {
 		
 		return instance;
 	};
-	
-	public void Init() {
-		MenuPanel menuPanel = MenuPanel.getInstance();
-		add(menuPanel, "menuPanel");
-	}
 
 	private CardLayout mainCard;
-	private JPanel contentPane;
 	private JTextField usernameField;
 
 	private LoginPanel() {
-		mainCard = new CardLayout();
-		setLayout(mainCard);
-		
-		contentPane = new JPanel();
-		add(contentPane, "contentPane");
-		contentPane.setLayout(null);
-		contentPane.setBackground(new Color(249, 224, 0));
-	
-
-
+		mainCard = MainPanel.getMainCard();
 //		로고 이미지
 		ImageIcon logoIcon = new ImageIcon("./image/logo.png");
 		ImageIcon resizedLogoIcon = new ImageIcon(logoIcon.getImage().getScaledInstance(80, 80, Image.SCALE_SMOOTH));
 		JLabel logoLabel = new JLabel(resizedLogoIcon);
-		contentPane.add(logoLabel);
+		add(logoLabel);
 		logoLabel.setBounds(200, 200, 80, 80);
 		
 //		시작하기 버튼 이미지
@@ -73,27 +60,13 @@ public class LoginPanel extends InitPanel {
 		loginButton.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mouseClicked(MouseEvent e) {
-//				mainCard.show(menuPanel, "menuPanel");
-				username = usernameField.getText();
-				JOptionPane.showMessageDialog(null, 
-							"접속성공", 
-							"카카오톡", 
-							JOptionPane.INFORMATION_MESSAGE);
-				 try {
-					socket = new Socket(ip, port);
-				} catch (UnknownHostException e1) {
-					// TODO Auto-generated catch block
-					e1.printStackTrace();
-				} catch (IOException e1) {
-					// TODO Auto-generated catch block
-					e1.printStackTrace();
-				}
-				
+//				PanelController.getInstance().setPanel(MenuPanel.getInstance());
+				mainCard.show(MainPanel.getInstance(), "menuPanel");
 			}
 		});
 		loginButton.setBackground(new Color(254, 229, 0));
 		loginButton.setBounds(100, 440, 280, 40);
-		contentPane.add(loginButton);
+		add(loginButton);
 		
 //		--
 		
@@ -101,10 +74,11 @@ public class LoginPanel extends InitPanel {
 		usernameField.setFont(new Font("D2Coding", Font.BOLD, 17));
 		usernameField.setHorizontalAlignment(SwingConstants.CENTER);
 		usernameField.setBounds(100, 380, 280, 45);
-		contentPane.add(usernameField);
+		add(usernameField);
 		usernameField.setColumns(10);
 
 	}
 	
+
 	
 }

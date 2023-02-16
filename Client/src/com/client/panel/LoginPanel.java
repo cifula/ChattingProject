@@ -1,25 +1,31 @@
 package com.client.panel;
 
+import java.awt.CardLayout;
+import java.awt.Color;
+import java.awt.Font;
 import java.awt.Image;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
+import java.io.IOException;
+import java.net.Socket;
+import java.net.UnknownHostException;
+
 import javax.swing.ImageIcon;
+import javax.swing.JButton;
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
 import javax.swing.SwingConstants;
 
-import java.awt.CardLayout;
-import java.awt.Color;
-import javax.swing.border.CompoundBorder;
-
-
-import javax.swing.JButton;
-import java.awt.Font;
-import java.awt.event.MouseAdapter;
-import java.awt.event.MouseEvent;
-
 public class LoginPanel extends InitPanel {
 	
 	private static LoginPanel instance;
+	private String username;
+	private Socket socket;
+	private String ip = "127.0.0.1";
+	private int port = 1111;
+	private int roomnum = 0;
 	
 	public static LoginPanel getInstance() {
 		if(instance == null) {
@@ -68,6 +74,21 @@ public class LoginPanel extends InitPanel {
 			@Override
 			public void mouseClicked(MouseEvent e) {
 //				mainCard.show(menuPanel, "menuPanel");
+				username = usernameField.getText();
+				JOptionPane.showMessageDialog(null, 
+							"접속성공", 
+							"카카오톡", 
+							JOptionPane.INFORMATION_MESSAGE);
+				 try {
+					socket = new Socket(ip, port);
+				} catch (UnknownHostException e1) {
+					// TODO Auto-generated catch block
+					e1.printStackTrace();
+				} catch (IOException e1) {
+					// TODO Auto-generated catch block
+					e1.printStackTrace();
+				}
+				
 			}
 		});
 		loginButton.setBackground(new Color(254, 229, 0));

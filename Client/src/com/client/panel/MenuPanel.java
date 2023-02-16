@@ -65,19 +65,19 @@ public class MenuPanel extends InitPanel {
 		plusButton.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mouseClicked(MouseEvent e) { //방만들기 플러스 버튼 누르기
-				roomname=JOptionPane.showInputDialog(null, "제목을 적어주세요 : .", "방 생성", JOptionPane.INFORMATION_MESSAGE);
-				ls.addElement(roomname);
-				MakeReqDto joinReqDto = new MakeReqDto(LoginPanel.getInstance().getUsername(),roomname);
-				String joinReqDtoJson = gson.toJson(joinReqDto);
+				roomname=JOptionPane.showInputDialog(null, "제목을 적어주세요 : .", "방 생성", JOptionPane.INFORMATION_MESSAGE); // 방제목 입력하기 
+				ls.addElement(roomname); // 방목록에 roomname 추가하기
+				MakeReqDto makeReqDto = new MakeReqDto(LoginPanel.getInstance().getUsername(),roomname); //login패널 적은 username과 roomname 저장
+				String joinReqDtoJson = gson.toJson(makeReqDto); // requsetDto 에 저장할 body 저장
 				RequestDto requestDto = new RequestDto("make", joinReqDtoJson);
-				String requestDtoJson = gson.toJson(requestDto);
+				String requestDtoJson = gson.toJson(requestDto); // requestDto 'resourse : make' , 'body :  { roomname : roomname , username : username } (json형태로)' 저장 
 			
 				OutputStream outputStream;
 				try {
 					outputStream = LoginPanel.getInstance().getSocket().getOutputStream();
 					PrintWriter out = new PrintWriter(outputStream, true);
-					out.println(requestDtoJson);
-					System.out.println(requestDtoJson+ "를 서버로 전송");
+					out.println(requestDtoJson); 
+					System.out.println(requestDtoJson+ "를 서버로 전송"); // 서버로 전송 되는지 확인용
 				} catch (IOException e1) {
 					// TODO Auto-generated catch block
 					e1.printStackTrace();

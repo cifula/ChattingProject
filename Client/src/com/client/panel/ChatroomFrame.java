@@ -1,11 +1,11 @@
-package com.client.frame;
+package com.client.panel;
 
 import javax.swing.ImageIcon;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import java.awt.Image;
 
-public class ChatroomFrame extends MainFrame {
+public class ChatroomFrame extends InitPanel {
 	
 	private static ChatroomFrame instance;
 	

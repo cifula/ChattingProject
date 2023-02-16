@@ -1,22 +1,20 @@
-package com.client.frame;
+package com.client.panel;
 
-import java.awt.EventQueue;
 
-import javax.swing.JFrame;
 import javax.swing.JPanel;
-import javax.swing.border.EmptyBorder;
 
-public class MainFrame extends JFrame {
+public class InitPanel extends JPanel{
 
 	private JPanel contentPane;
 	
-	public MainFrame() {
-		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		setBounds(100, 100, 480, 800);
-		contentPane = new JPanel();
-		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
+	private final int WIDTH = 480;
+	private final int HEIGHT = 800;
+	
+	public InitPanel() {
 
-		setContentPane(contentPane);
+		setLayout(null);
+		setBorder(null);
+		setSize(WIDTH, HEIGHT);
 	}
 
 }

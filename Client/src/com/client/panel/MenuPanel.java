@@ -1,4 +1,4 @@
-package com.client.frame;
+package com.client.panel;
 
 import javax.swing.DefaultListModel;
 import javax.swing.ImageIcon;
@@ -10,33 +10,34 @@ import javax.swing.JScrollPane;
 import java.awt.CardLayout;
 import java.awt.Color;
 
-import javax.swing.JTextField;
-import javax.swing.JTextPane;
-import javax.swing.JSeparator;
 import javax.swing.JList;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 
-public class MenuFrame extends MainFrame {
+public class MenuPanel extends InitPanel {
 	
-	private static MenuFrame instance;
+	private static MenuPanel instance;
 	
-	public static MenuFrame getInstance() {
+	public static MenuPanel getInstance() {
 		if(instance == null) {
-			instance = new MenuFrame();
+			instance = new MenuPanel();
 		}
 		
 		return instance;
 	};
 	
 
+	private CardLayout mainCard;
 	private JPanel contentPane;
 	
-	public MenuFrame() {
+	public MenuPanel() {
+		mainCard = new CardLayout();
+		setLayout(mainCard);
+		
 		contentPane = new JPanel();
-		contentPane.setBackground(new Color(249, 224, 0));
-		setContentPane(contentPane);
+		add(contentPane, "contentPane");
 		contentPane.setLayout(null);
+		contentPane.setBackground(new Color(249, 224, 0));
 		
 //		로고 이미지
 		ImageIcon logoIcon = new ImageIcon("./image/logo.png");

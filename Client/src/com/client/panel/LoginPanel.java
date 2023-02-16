@@ -1,4 +1,4 @@
-package com.client.frame;
+package com.client.panel;
 
 import java.awt.Image;
 import javax.swing.ImageIcon;
@@ -6,40 +6,48 @@ import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
 import javax.swing.SwingConstants;
+
+import java.awt.CardLayout;
 import java.awt.Color;
 import javax.swing.border.CompoundBorder;
 
-import com.client.ClientController;
 
 import javax.swing.JButton;
 import java.awt.Font;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 
-public class LoginFrame extends MainFrame {
+public class LoginPanel extends InitPanel {
 	
-	private static LoginFrame instance;
+	private static LoginPanel instance;
 	
-	public static LoginFrame getInstance() {
+	public static LoginPanel getInstance() {
 		if(instance == null) {
-			instance = new LoginFrame();
+			instance = new LoginPanel();
 		}
 		
 		return instance;
 	};
+	
+	public void Init() {
+		MenuPanel menuPanel = MenuPanel.getInstance();
+		add(menuPanel, "menuPanel");
+	}
 
+	private CardLayout mainCard;
 	private JPanel contentPane;
 	private JTextField usernameField;
-	private ClientController controller;
 
-	private LoginFrame() {
-		contentPane = new JPanel();
-		contentPane.setBackground(new Color(249, 224, 0));
-
-		setContentPane(contentPane);
-		contentPane.setLayout(null);
-		controller = ClientController.getInstance();
+	private LoginPanel() {
+		mainCard = new CardLayout();
+		setLayout(mainCard);
 		
+		contentPane = new JPanel();
+		add(contentPane, "contentPane");
+		contentPane.setLayout(null);
+		contentPane.setBackground(new Color(249, 224, 0));
+	
+
 
 //		로고 이미지
 		ImageIcon logoIcon = new ImageIcon("./image/logo.png");
@@ -59,7 +67,7 @@ public class LoginFrame extends MainFrame {
 		loginButton.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mouseClicked(MouseEvent e) {
-				controller.setFrame(MenuFrame.getInstance());
+//				mainCard.show(menuPanel, "menuPanel");
 			}
 		});
 		loginButton.setBackground(new Color(254, 229, 0));
@@ -76,4 +84,6 @@ public class LoginFrame extends MainFrame {
 		usernameField.setColumns(10);
 
 	}
+	
+	
 }

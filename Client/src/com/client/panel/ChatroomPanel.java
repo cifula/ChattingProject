@@ -1,9 +1,7 @@
 package com.client.panel;
 
-import javax.swing.ImageIcon;
-import javax.swing.JLabel;
+
 import javax.swing.JPanel;
-import java.awt.Image;
 
 public class ChatroomPanel extends InitPanel {
 	

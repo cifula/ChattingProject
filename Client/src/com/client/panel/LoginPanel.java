@@ -67,7 +67,7 @@ public class LoginPanel extends InitPanel {
 
 				socket = MainFrame.getSocket();
 				try {
-					RequestDto requestDto = new RequestDto("username", usernameField.getText());
+					RequestDto requestDto = new RequestDto("user", usernameField.getText());
 					
 					OutputStream outputStream;
 					outputStream = socket.getOutputStream();

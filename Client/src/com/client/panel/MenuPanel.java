@@ -29,11 +29,12 @@ public class MenuPanel extends InitPanel {
 		return instance;
 	};
 	
-
+	
 	private CardLayout mainCard;
 	
 	public MenuPanel() {
 		mainCard = MainPanel.getMainCard();
+		
 		
 //		로고 이미지
 		ImageIcon logoIcon = new ImageIcon("./image/logo.png");

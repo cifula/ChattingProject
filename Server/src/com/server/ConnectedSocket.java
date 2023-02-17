@@ -11,6 +11,8 @@ import java.util.List;
 import com.google.gson.Gson;
 
 import dto.RequestDto;
+import entity.User;
+import repository.UserRepository;
 
 public class ConnectedSocket extends Thread {
 	private Socket socket;
@@ -33,7 +35,14 @@ public class ConnectedSocket extends Thread {
 			while(true) {
 				String request = in.readLine();
 				RequestDto requestDto = gson.fromJson(request, RequestDto.class);
-				System.out.println(requestDto);
+
+				switch(requestDto.getResource()) {
+					case "user":
+						User user = new User(requestDto.getBody());
+						UserRepository.getInstance().addUser(user);
+				}
+				
+				
 				
 			}
 			

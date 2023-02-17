@@ -2,10 +2,9 @@ package com.client.panel;
 
 
 import java.awt.Color;
-import java.awt.event.MouseAdapter;
-import java.awt.event.MouseEvent;
+import java.awt.Image;
 
-import javax.swing.JButton;
+import javax.swing.ImageIcon;
 import javax.swing.JPanel;
 
 public class InitPanel extends JPanel{
@@ -20,6 +19,15 @@ public class InitPanel extends JPanel{
 		setLayout(null);
 		setBorder(null);
 		setSize(WIDTH, HEIGHT);
+		
+
 	}
+	
+	public ImageIcon addImage(String imageName, int width, int length) {
+		ImageIcon image = new ImageIcon("./image/" + imageName);
+		ImageIcon resizedImage = new ImageIcon(image.getImage().getScaledInstance(width, length, Image.SCALE_SMOOTH));
+		return resizedImage;
+	}
+	
 
 }

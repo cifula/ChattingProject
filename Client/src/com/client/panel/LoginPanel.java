@@ -46,21 +46,22 @@ public class LoginPanel extends InitPanel {
 		
 		setBackground(kakaoColor);
 		mainCard = MainPanel.getMainCard();
-//		로고 이미지
-		ImageIcon logoIcon = new ImageIcon("./image/logo.png");
-		ImageIcon resizedLogoIcon = new ImageIcon(logoIcon.getImage().getScaledInstance(80, 80, Image.SCALE_SMOOTH));
-		JLabel logoLabel = new JLabel(resizedLogoIcon);
+		
+//		로고
+		JLabel logoLabel = new JLabel(addImage("logo.png", 80, 80));
 		add(logoLabel);
 		logoLabel.setBounds(200, 200, 80, 80);
 		
-//		시작하기 버튼 이미지
-		ImageIcon loginbuttonIcon = new ImageIcon("./image/loginbutton.png");
-		ImageIcon resizedLoginbuttonIcon = new ImageIcon(loginbuttonIcon.getImage().getScaledInstance(280, 40, Image.SCALE_SMOOTH));
+
 		
 		
 //		로그인 버튼
 		
-		JButton loginButton = new JButton(resizedLoginbuttonIcon);
+		JButton loginButton = new JButton(addImage("loginbutton.png", 280, 40));
+		loginButton.setBackground(new Color(254, 229, 0));
+		loginButton.setBounds(100, 440, 280, 40);
+		add(loginButton);
+		
 		loginButton.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mouseClicked(MouseEvent e) {
@@ -79,19 +80,12 @@ public class LoginPanel extends InitPanel {
 					
 					e1.printStackTrace();
 				}
-					
-					
 				mainCard.show(MainPanel.getInstance(), "menuPanel");
-					
-
-				
 			}
 		});
-		loginButton.setBackground(new Color(254, 229, 0));
-		loginButton.setBounds(100, 440, 280, 40);
-		add(loginButton);
+
 		
-//		--
+//		username 입력창
 		
 		usernameField = new JTextField();
 		usernameField.setFont(new Font("D2Coding", Font.BOLD, 17));

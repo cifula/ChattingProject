@@ -12,7 +12,6 @@ import javax.swing.JFrame;
 
 import com.client.panel.LoginPanel;
 import com.client.panel.MainPanel;
-import com.client.panel.PanelController;
 
 import lombok.Getter;
 
@@ -49,7 +48,7 @@ public class MainFrame extends JFrame {
 		}
 		
 		
-		
+	
 		
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		setBounds(100, 100, 480, 800);

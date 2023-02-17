@@ -18,7 +18,8 @@ import lombok.Getter;
 
 public class MainFrame extends JFrame {
 	private static MainFrame instance;
-	private Socket socket;
+	@Getter
+	private static Socket socket;
 	private InputStream inputStream;
 	
 	public static MainFrame getInstance() {
@@ -36,8 +37,7 @@ public class MainFrame extends JFrame {
 			socket = new Socket(ip, port);
 			inputStream = socket.getInputStream();
 			BufferedReader in = new BufferedReader(new InputStreamReader(inputStream));
-			
-//			setContentPane(LoginPanel.getInstance());
+
 			setContentPane(MainPanel.getInstance());
 		
 

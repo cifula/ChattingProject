@@ -23,11 +23,7 @@ import com.client.frame.MainFrame;
 public class LoginPanel extends InitPanel {
 	
 	private static LoginPanel instance;
-	private String username;
 	private Socket socket;
-	private String ip = "127.0.0.1";
-	private int port = 1111;
-	private int roomnum = 0;
 	
 	public static LoginPanel getInstance() {
 		if(instance == null) {
@@ -39,8 +35,12 @@ public class LoginPanel extends InitPanel {
 
 	private CardLayout mainCard;
 	private JTextField usernameField;
+	private String username;
 
 	private LoginPanel() {
+		socket = MainFrame.getSocket();
+		
+		setBackground(kakaoColor);
 		mainCard = MainPanel.getMainCard();
 //		로고 이미지
 		ImageIcon logoIcon = new ImageIcon("./image/logo.png");
@@ -60,8 +60,9 @@ public class LoginPanel extends InitPanel {
 		loginButton.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mouseClicked(MouseEvent e) {
-//				PanelController.getInstance().setPanel(MenuPanel.getInstance());
+				
 				mainCard.show(MainPanel.getInstance(), "menuPanel");
+				
 			}
 		});
 		loginButton.setBackground(new Color(254, 229, 0));

@@ -5,13 +5,13 @@ import javax.swing.JLabel;
 import javax.swing.JPanel;
 import java.awt.Image;
 
-public class ChatroomFrame extends InitPanel {
+public class ChatroomPanel extends InitPanel {
 	
-	private static ChatroomFrame instance;
+	private static ChatroomPanel instance;
 	
-	public static ChatroomFrame getInstance() {
+	public static ChatroomPanel getInstance() {
 		if(instance == null) {
-			instance = new ChatroomFrame();
+			instance = new ChatroomPanel();
 		}
 		
 		return instance;
@@ -19,13 +19,9 @@ public class ChatroomFrame extends InitPanel {
 
 	private JPanel contentPane;
 
-	public ChatroomFrame() {
+	public ChatroomPanel() {
 		contentPane = new JPanel();
 
-<<<<<<< HEAD
-=======
-		setCont entPane(contentPane);
->>>>>>> 상현
 		
 	}
 

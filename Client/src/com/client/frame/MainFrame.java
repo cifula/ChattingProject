@@ -32,13 +32,15 @@ public class MainFrame extends JFrame {
 		String ip = "127.0.0.1";
 		int port = 9090;
 		
+		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		setBounds(100, 100, 480, 800);
+		
 		try {
 			socket = new Socket(ip, port);
 
 			setContentPane(MainPanel.getInstance());
 		
 
-			
 		} catch (UnknownHostException e) {
 			e.printStackTrace();
 			
@@ -50,8 +52,7 @@ public class MainFrame extends JFrame {
 		
 	
 		
-		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		setBounds(100, 100, 480, 800);
+
 		
 		
 		

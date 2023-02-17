@@ -35,8 +35,6 @@ public class MainFrame extends JFrame {
 		
 		try {
 			socket = new Socket(ip, port);
-			inputStream = socket.getInputStream();
-			BufferedReader in = new BufferedReader(new InputStreamReader(inputStream));
 
 			setContentPane(MainPanel.getInstance());
 		

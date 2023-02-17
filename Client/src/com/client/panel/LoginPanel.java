@@ -7,23 +7,23 @@ import java.awt.Image;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.io.IOException;
+import java.io.OutputStream;
+import java.io.PrintWriter;
 import java.net.Socket;
-import java.net.UnknownHostException;
 
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JLabel;
-import javax.swing.JOptionPane;
-import javax.swing.JPanel;
 import javax.swing.JTextField;
 import javax.swing.SwingConstants;
 
+import com.client.dto.RequestDto;
 import com.client.frame.MainFrame;
+import com.google.gson.Gson;
 
 public class LoginPanel extends InitPanel {
 	
 	private static LoginPanel instance;
-	private Socket socket;
 	
 	public static LoginPanel getInstance() {
 		if(instance == null) {
@@ -36,9 +36,13 @@ public class LoginPanel extends InitPanel {
 	private CardLayout mainCard;
 	private JTextField usernameField;
 	private String username;
+	
+	private Socket socket;
+	private Gson gson;
+	
 
 	private LoginPanel() {
-		socket = MainFrame.getSocket();
+		gson = new Gson();
 		
 		setBackground(kakaoColor);
 		mainCard = MainPanel.getMainCard();
@@ -60,8 +64,26 @@ public class LoginPanel extends InitPanel {
 		loginButton.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mouseClicked(MouseEvent e) {
-				
+
+				socket = MainFrame.getSocket();
+				try {
+					RequestDto requestDto = new RequestDto("username", usernameField.getText());
+					
+					OutputStream outputStream;
+					outputStream = socket.getOutputStream();
+					PrintWriter out = new PrintWriter(outputStream, true);
+					
+					out.println(gson.toJson(requestDto));
+					
+				} catch (IOException e1) {
+					
+					e1.printStackTrace();
+				}
+					
+					
 				mainCard.show(MainPanel.getInstance(), "menuPanel");
+					
+
 				
 			}
 		});

@@ -19,6 +19,8 @@ public class ServerApplication {
 				Socket socket = serverSocket.accept();
 				ConnectedSocket connectedSocket = new ConnectedSocket(socket);
 				connectedSocket.start();
+				
+				
 			}
 			
 		} catch (IOException e) {

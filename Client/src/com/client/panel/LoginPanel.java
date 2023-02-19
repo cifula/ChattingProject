@@ -17,6 +17,7 @@ import javax.swing.JLabel;
 import javax.swing.JTextField;
 import javax.swing.SwingConstants;
 
+import com.client.ClientRecive;
 import com.client.dto.RequestDto;
 import com.client.frame.MainFrame;
 import com.google.gson.Gson;
@@ -35,13 +36,14 @@ public class LoginPanel extends InitPanel {
 
 	private CardLayout mainCard;
 	private JTextField usernameField;
-	private String username;
-	
+	private static String username;
 	private Socket socket;
+
 	private Gson gson;
 	
 
-	private LoginPanel() {
+	private LoginPanel() {	
+		socket = MainFrame.getSocket();
 		gson = new Gson();
 		
 		setBackground(kakaoColor);
@@ -64,23 +66,13 @@ public class LoginPanel extends InitPanel {
 		
 		loginButton.addMouseListener(new MouseAdapter() {
 			@Override
-			public void mouseClicked(MouseEvent e) {
+			public void mouseClicked(MouseEvent e) {			
+				username = usernameField.getText();
+				RequestDto requestDto = new RequestDto("join", username);
 
-				socket = MainFrame.getSocket();
-				try {
-					RequestDto requestDto = new RequestDto("user", usernameField.getText());
-					
-					OutputStream outputStream;
-					outputStream = socket.getOutputStream();
-					PrintWriter out = new PrintWriter(outputStream, true);
-					
-					out.println(gson.toJson(requestDto));
-					
-				} catch (IOException e1) {
-					
-					e1.printStackTrace();
-				}
-				mainCard.show(MainPanel.getInstance(), "menuPanel");
+				
+				sendRequest(requestDto);
+				
 			}
 		});
 
@@ -92,8 +84,7 @@ public class LoginPanel extends InitPanel {
 		usernameField.setHorizontalAlignment(SwingConstants.CENTER);
 		usernameField.setBounds(100, 380, 280, 45);
 		add(usernameField);
-		usernameField.setColumns(10);
-
+		usernameField.setColumns(10);		
 	}
 	
 

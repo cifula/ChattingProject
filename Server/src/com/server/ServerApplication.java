@@ -4,11 +4,16 @@ import java.io.IOException;
 import java.net.ServerSocket;
 import java.net.Socket;
 
+import entity.Room;
+import repository.RoomRepository;
+
 public class ServerApplication {
 	
 	private Socket socket;
 	
 	public static void main(String[] args) {
+		RoomRepository.getInstance().addRoom(new Room("111"));
+		RoomRepository.getInstance().addRoom(new Room("222"));
 		ServerSocket serverSocket = null;
 		
 		try {
@@ -24,7 +29,7 @@ public class ServerApplication {
 			}
 			
 		} catch (IOException e) {
-			e.printStackTrace();
+			System.out.println("");
 			
 		} finally {
 			System.out.println("서버 종료");

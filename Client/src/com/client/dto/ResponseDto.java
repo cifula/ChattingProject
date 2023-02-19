@@ -1,6 +1,6 @@
-package dto;
+package com.client.dto;
 
-import java.util.List;
+
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -10,4 +10,5 @@ import lombok.Data;
 public class ResponseDto {
 	private String resource;
 	private String body;
+
 }

@@ -3,16 +3,15 @@ package com.client.panel;
 
 import java.awt.CardLayout;
 import java.awt.Color;
-import java.awt.Image;
-
-import javax.swing.ImageIcon;
-import javax.swing.JButton;
-import javax.swing.JLabel;
-import javax.swing.JPanel;
-import javax.swing.JScrollPane;
-import javax.swing.JTextArea;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
+
+import javax.swing.JButton;
+import javax.swing.JLabel;
+import javax.swing.JScrollPane;
+import javax.swing.JTextArea;
+
+import com.client.dto.SendMessageDto;
 
 public class ChatroomPanel extends InitPanel {
 	
@@ -68,6 +67,12 @@ public class ChatroomPanel extends InitPanel {
 		
 		// 메세지 보내기 아이콘
 		JButton sendButton = new JButton(addImage("send.png", 40, 40));
+		sendButton.addMouseListener(new MouseAdapter() {
+			@Override
+			public void mouseClicked(MouseEvent e) {
+				SendMessageDto sendmessageDto = new SendMessageDto();
+			}
+		});
 		sendButton.setBounds(390, 680, 90, 120);
 		sendButton.setBackground(new Color(255, 255, 255));
 		add(sendButton);

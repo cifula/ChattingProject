@@ -27,7 +27,7 @@ public class UserRepository {
 	
 	private Gson gson;
 	
-	private List<User> userList;
+	private static List<User> userList;
 		
 	public void addUser(User user) {
 		userList.add(user);

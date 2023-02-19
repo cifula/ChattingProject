@@ -30,7 +30,6 @@ public class ClientRecive extends Thread{
 	@Override
 	public void run() {
 		try {
-			mainCard = MainPanel.getMainCard();
 			inputStream = socket.getInputStream();
 			BufferedReader in = new BufferedReader(new InputStreamReader(inputStream));
 			gson = new Gson();
@@ -49,6 +48,7 @@ public class ClientRecive extends Thread{
 						break;
 						
 					case "join":
+						mainCard = MainPanel.getMainCard();
 						mainCard.show(MainPanel.getInstance(), "menuPanel");
 						break;
 				

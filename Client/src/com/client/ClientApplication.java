@@ -5,8 +5,6 @@ import java.io.IOException;
 import java.net.Socket;
 import java.net.UnknownHostException;
 
-import com.client.frame.MainFrame;
-
 import lombok.Getter;
 
 public class ClientApplication {
@@ -31,13 +29,11 @@ public class ClientApplication {
 						
 					}
 					
-//					MainFrame frame = MainFrame.getInstance();
-//					frame.setVisible(true);
 					RunMainFrame runMainFrame = new RunMainFrame();
-					runMainFrame.run();
+					runMainFrame.start();
 					
-//					ClientRecive clientRecive = new ClientRecive(socket);
-//					clientRecive.run();
+					ClientRecive clientRecive = new ClientRecive(socket);
+					clientRecive.start();
 
 					
 				} catch (Exception e) {

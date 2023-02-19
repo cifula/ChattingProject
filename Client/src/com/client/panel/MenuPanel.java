@@ -14,9 +14,14 @@ import javax.swing.JList;
 import javax.swing.JOptionPane;
 import javax.swing.JScrollPane;
 
+import com.client.Repository.RoomRepository;
 import com.client.dto.RequestDto;
+import com.client.entity.ConnectedUser;
+import com.client.entity.Room;
+import com.google.gson.Gson;
 
 import lombok.Getter;
+import lombok.Setter;
 
 @Getter
 public class MenuPanel extends InitPanel {
@@ -36,11 +41,15 @@ public class MenuPanel extends InitPanel {
 	private CardLayout mainCard;
 	private String roomname;
 	private DefaultListModel<String> ls;
-	private JList roomList;
+	private JList<String> roomList;
+	private Gson gson;
 	
 	public MenuPanel() {
 		mainCard = MainPanel.getMainCard();
 		setBackground(kakaoColor);
+		gson = new Gson();
+		
+		
 		
 //		로고 이미지
 		ImageIcon logoIcon = new ImageIcon("./image/logo.png");
@@ -57,11 +66,7 @@ public class MenuPanel extends InitPanel {
 			@Override
 			public void mouseClicked(MouseEvent e) {
 				roomname = JOptionPane.showInputDialog(null, "방이름을 입력해주세요.", "방이름입력", JOptionPane.INFORMATION_MESSAGE);
-				RequestDto requestDto = new RequestDto("createRoom", roomname);
-				sendRequest(requestDto);
-				
-				RequestDto requestDto2 = new RequestDto("getRoomList", "pass");
-				sendRequest(requestDto2);
+				sendRequest(new RequestDto("createRoom", roomname));
 			}
 		});
 		plusButton.setForeground(new Color(255, 255, 255));
@@ -75,29 +80,27 @@ public class MenuPanel extends InitPanel {
 		add(scrollPane);
 		scrollPane.setBounds(80, 0, 400, 800);
 		
-		roomList = new JList();
-
-		scrollPane.setViewportView(roomList);
-		
 		ls = new DefaultListModel<>();
+		
+		roomList = new JList<>(ls);
+		scrollPane.setViewportView(roomList);
 		
 		roomList.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mouseClicked(MouseEvent e) {
 				if(e.getClickCount() == 2) {
-					String selectedValue = (String) roomList.getSelectedValue();
-					
-					System.out.println(selectedValue);
+					int selectedIndex = roomList.getSelectedIndex();
+					Room selectedRoom = RoomRepository.getInstance().getRoomList().get(selectedIndex);
+					int roomId = selectedRoom.getRoomId();
+					RequestDto requestDto = new RequestDto("joinRoom", gson.toJson(roomId));
+					sendRequest(requestDto);
 				}
 			}
 		});
-		
-//		roomList.setModel(ls);
-		
-		
+	
+	}
+
 
 	
 
-
-	}
 }

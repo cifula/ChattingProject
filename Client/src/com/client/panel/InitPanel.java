@@ -36,12 +36,14 @@ public class InitPanel extends JPanel{
 
 	}
 	
+//	이미지 추가 메소드
 	public ImageIcon addImage(String imageName, int width, int length) {
 		ImageIcon image = new ImageIcon("./image/" + imageName);
 		ImageIcon resizedImage = new ImageIcon(image.getImage().getScaledInstance(width, length, Image.SCALE_SMOOTH));
 		return resizedImage;
 	}
 	
+//	요청 보내기 메소드
 	public void sendRequest(RequestDto requestDto){
 		OutputStream outputStream;
 		try {

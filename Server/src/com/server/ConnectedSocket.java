@@ -14,18 +14,23 @@ import com.google.gson.Gson;
 
 import dto.RequestDto;
 import dto.ResponseDto;
+import dto.SendMessageDto;
+import dto.SendRoomDto;
 import entity.Room;
 import entity.User;
+import lombok.Getter;
 import repository.RoomRepository;
 import repository.UserRepository;
 
 public class ConnectedSocket extends Thread {
+	@Getter
 	private Socket socket;	
 	private InputStream inputStream;
 	private OutputStream outputStream;
 	private Gson gson;
 	
-	private String username;
+	@Getter
+	private User user;
 	
 	public ConnectedSocket(Socket socket) {
 		this.socket = socket;
@@ -44,26 +49,47 @@ public class ConnectedSocket extends Thread {
 				RequestDto requestDto = gson.fromJson(request, RequestDto.class);
 
 				switch(requestDto.getResource()) {
-					case "join":
-						User user = new User(requestDto.getBody());
+					case "login":
+						user = new User(requestDto.getBody());
 						UserRepository.getInstance().addUser(user);
-						username = user.getUsername();
-						sendResponse(requestDto.getResource(), "join");
+						sendResponse(requestDto.getResource(), gson.toJson(user));
 						break;
 						
 					case "createRoom":
-						Room room = new Room(requestDto.getBody());
-						RoomRepository.getInstance().addRoom(room);
+						Room createdRoom = new Room(requestDto.getBody());
+						SendRoomDto sendRoomDto = new SendRoomDto(createdRoom);
+						createdRoom.getSocketList().add(this);
+						RoomRepository.getInstance().addRoom(createdRoom);
+						sendResponse(requestDto.getResource(), gson.toJson(sendRoomDto));
 						break;
 						
 					case "getRoomList":
 						sendRoomList(requestDto.getResource());
 						break;
+						
+					case "joinRoom":
+						int roomId = Integer.parseInt(requestDto.getBody());
+						Room joinRoom = RoomRepository.getInstance().findRoomByRoomId(roomId);
+						joinRoom.getSocketList().add(this);
+						
+						
+						SendRoomDto joinRoomDto = new SendRoomDto(joinRoom);
+						sendResponse(requestDto.getResource(), gson.toJson(joinRoomDto));
+						sendUserListToAll(joinRoom);
+						break;
+						
+					case "sendMessage":
+						SendMessageDto sendMessageDto = gson.fromJson(requestDto.getBody(), SendMessageDto.class);
+						User fromUser = UserRepository.getInstance().findUserByUserId(sendMessageDto.getUserId());
+						Room toRoom = RoomRepository.getInstance().findRoomByRoomId(sendMessageDto.getRoomId());
+						String message = sendMessageDto.getMessage();
+						
+						sendMessageToAll(fromUser.getUsername(), toRoom, message);
+						break;
 			
 				}
 			}	
 		} catch (IOException e) {
-			e.printStackTrace();
 		}
 		
 		
@@ -77,18 +103,50 @@ public class ConnectedSocket extends Thread {
 	}
 	
 	private void sendRoomList(String resource) throws IOException {
-		List<Room> roomList = RoomRepository.getRoomList();
+		List<Room> roomList = RoomRepository.getInstance().getRoomList();
 		List<String> roomListToSend = new ArrayList<>();
-		
-		for(Room room : roomList) {
-			roomListToSend.add(gson.toJson(room));
-		}
-				
-		
-		sendResponse(resource, gson.toJson(roomListToSend));
+		if(!roomList.isEmpty()) {
+			for(Room room : roomList) {
+				SendRoomDto sendRoomDto = new SendRoomDto(room);
+				roomListToSend.add(gson.toJson(sendRoomDto));
+			}
+			sendResponse(resource, gson.toJson(roomListToSend));
 			
+		} else if (roomList.isEmpty()) {
+			sendResponse("emptyRoom", "채팅방이 존재하지 않습니다.");
+			
+		}
+
+	}
+	
+	private void sendUserListToAll(Room room) throws IOException {
+		List<ConnectedSocket> socketList = room.getSocketList();
+		List<User> userList = new ArrayList<>();
 		
+		for(ConnectedSocket socket : socketList) {
+			userList.add(socket.getUser());
+		}
 		
+		ResponseDto responseDto = new ResponseDto("newUserJoin", gson.toJson(userList));
+		
+		for(ConnectedSocket socket : socketList) {
+			OutputStream outputStream = socket.getSocket().getOutputStream();
+			PrintWriter out = new PrintWriter(outputStream, true);
+			out.println(gson.toJson(responseDto));
+		}
+		
+	}
+	
+	private void sendMessageToAll(String username, Room room, String message) throws IOException {
+		List<ConnectedSocket> socketList = room.getSocketList();
+		
+		ResponseDto responseDto = new ResponseDto("sendMessage", username + ":" + message);
+		
+		for(ConnectedSocket socket : socketList) {
+			OutputStream outputStream = socket.getSocket().getOutputStream();
+			PrintWriter out = new PrintWriter(outputStream, true);
+			out.println(gson.toJson(responseDto));
+		}
 	}
 
 }

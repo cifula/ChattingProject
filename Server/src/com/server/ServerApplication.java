@@ -1,5 +1,4 @@
 package com.server;
-
 import java.io.IOException;
 import java.net.ServerSocket;
 import java.net.Socket;
@@ -12,8 +11,6 @@ public class ServerApplication {
 	private Socket socket;
 	
 	public static void main(String[] args) {
-		RoomRepository.getInstance().addRoom(new Room("111"));
-		RoomRepository.getInstance().addRoom(new Room("222"));
 		ServerSocket serverSocket = null;
 		
 		try {

@@ -5,6 +5,7 @@ import java.util.List;
 
 import com.google.gson.Gson;
 
+import entity.Room;
 import entity.User;
 import lombok.Data;
 
@@ -27,9 +28,19 @@ public class UserRepository {
 	
 	private Gson gson;
 	
-	private static List<User> userList;
+	private List<User> userList;
 		
 	public void addUser(User user) {
 		userList.add(user);
+	}
+	
+	public User findUserByUserId(int userId) {
+		for(User user: userList) {
+			if(user.getUserId() == userId) {
+				return user;
+			}
+		}
+		
+		return null;
 	}
 }

@@ -3,21 +3,15 @@ package com.client.panel;
 import java.awt.CardLayout;
 import java.awt.Color;
 import java.awt.Font;
-import java.awt.Image;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
-import java.io.IOException;
-import java.io.OutputStream;
-import java.io.PrintWriter;
 import java.net.Socket;
 
-import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JLabel;
 import javax.swing.JTextField;
 import javax.swing.SwingConstants;
 
-import com.client.ClientRecive;
 import com.client.dto.RequestDto;
 import com.client.frame.MainFrame;
 import com.google.gson.Gson;
@@ -68,10 +62,9 @@ public class LoginPanel extends InitPanel {
 			@Override
 			public void mouseClicked(MouseEvent e) {			
 				username = usernameField.getText();
-				RequestDto requestDto = new RequestDto("join", username);
+				sendRequest(new RequestDto("getRoomList", "pass"));
+				sendRequest(new RequestDto("login", username));
 
-				
-				sendRequest(requestDto);
 				
 			}
 		});

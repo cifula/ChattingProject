@@ -27,10 +27,20 @@ public class RoomRepository {
 	private Gson gson;
 	
 	@Getter
-	private static List<Room> roomList;
+	private List<Room> roomList;
 		
 	public void addRoom(Room room) {
 		roomList.add(room);
+	}
+	
+	public Room findRoomByRoomId(int roomId) {
+		for(Room room : roomList) {
+			if(room.getRoomId() == roomId) {
+				return room;
+			}
+		}
+		
+		return null;
 	}
 
 }

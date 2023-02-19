@@ -4,7 +4,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 import com.client.entity.Room;
-import com.google.gson.Gson;
 
 import lombok.Getter;
 import lombok.Setter;
@@ -27,11 +26,17 @@ public class RoomRepository {
 	
 	@Getter
 	@Setter
-	private static List<Room> roomList;
+	private List<Room> roomList;
 	
 	public void addRoom(Room room) {
 		roomList.add(room);
 	}
+	
+	public void clear() {
+		roomList = new ArrayList<>();
+	}
+	
+
 
 
 }

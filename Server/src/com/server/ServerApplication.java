@@ -6,7 +6,6 @@ import java.net.Socket;
 
 public class ServerApplication {
 	
-	private Socket socket;
 	
 	public static void main(String[] args) {
 		ServerSocket serverSocket = null;

@@ -13,6 +13,7 @@ import javax.swing.JFrame;
 import com.client.panel.LoginPanel;
 import com.client.panel.MainPanel;
 import com.client.panel.PanelController;
+import com.server.ConnectedSocket;
 
 import lombok.Getter;
 
@@ -35,7 +36,6 @@ public class MainFrame extends JFrame {
 		
 		try {
 			socket = new Socket(ip, port);
-
 			setContentPane(MainPanel.getInstance());
 		
 

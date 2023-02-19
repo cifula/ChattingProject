@@ -12,20 +12,24 @@ import com.google.gson.Gson;
 
 import dto.MakeRespDto;
 import dto.ResponseDto;
+import lombok.AllArgsConstructor;
+import lombok.Data;
 import lombok.RequiredArgsConstructor;
 
 
 @RequiredArgsConstructor
+@Data
+@AllArgsConstructor
 public class ClientRecive extends Thread {
 
-	private final Socket socket;
+	private final Socket socket = MainFrame.getSocket();
 	private InputStream inputStream;
 	private Gson gson;
 	
 	@Override
 	public void run() {
 		try {
-			inputStream = MainFrame.getInstance().getSocket().getInputStream();
+			inputStream = socket.getInputStream();
 			BufferedReader in = new BufferedReader(new InputStreamReader(inputStream));
 			gson = new Gson();
 			
@@ -34,9 +38,9 @@ public class ClientRecive extends Thread {
 				ResponseDto responseDto = gson.fromJson(request, ResponseDto.class);
 				switch(responseDto.getResource()) {
 					case "make":
-							MakeRespDto joinRespDto = gson.fromJson(responseDto.getBody(), MakeRespDto.class);
-							System.out.println(joinRespDto);
-							
+							MakeRespDto makeRespDto = gson.fromJson(responseDto.getBody(), MakeRespDto.class);
+							MenuPanel.getInstance().getLs().addElement(makeRespDto.getRoomname());
+							System.out.println(makeRespDto.getRoomname());
 						break;
 						
 				}
@@ -46,9 +50,7 @@ public class ClientRecive extends Thread {
 		}
 	}
 
-	public static void main(String[] args) {
-		joinRespDto
-	}
+	
 }
 
 

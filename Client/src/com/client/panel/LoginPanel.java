@@ -17,14 +17,18 @@ import javax.swing.JLabel;
 import javax.swing.JTextField;
 import javax.swing.SwingConstants;
 
+import com.client.ClientRecive;
 import com.client.dto.RequestDto;
 import com.client.frame.MainFrame;
 import com.google.gson.Gson;
 
+import dto.LoginReqDto;
+import dto.MakeReqDto;
+import lombok.Data;
+@Data
 public class LoginPanel extends InitPanel {
-	
+	private OutputStream outputStream;
 	private static LoginPanel instance;
-	
 	public static LoginPanel getInstance() {
 		if(instance == null) {
 			instance = new LoginPanel();
@@ -37,7 +41,7 @@ public class LoginPanel extends InitPanel {
 	private JTextField usernameField;
 	private String username;
 	
-	private Socket socket;
+	private Socket socket = MainFrame.getSocket();
 	private Gson gson;
 	
 
@@ -65,19 +69,20 @@ public class LoginPanel extends InitPanel {
 			@Override
 			public void mouseClicked(MouseEvent e) {
 
-				socket = MainFrame.getSocket();
+				username = usernameField.getText();
+				LoginReqDto loginReqDto = new LoginReqDto(username); 
+				String loginReqDtoJson = gson.toJson(loginReqDto); 
+				RequestDto requestDto = new RequestDto("login", loginReqDtoJson);
+				String requestDtoJson = gson.toJson(requestDto);  
+
 				try {
-					RequestDto requestDto = new RequestDto("username", usernameField.getText());
-					
-					OutputStream outputStream;
 					outputStream = socket.getOutputStream();
 					PrintWriter out = new PrintWriter(outputStream, true);
-					
-					out.println(gson.toJson(requestDto));
-					
+					out.println(requestDtoJson); 
 				} catch (IOException e1) {
-					
+					// TODO Auto-generated catch block
 					e1.printStackTrace();
+				
 				}
 					
 					

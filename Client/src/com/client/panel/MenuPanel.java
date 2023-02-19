@@ -8,6 +8,7 @@ import java.awt.event.MouseEvent;
 import java.io.IOException;
 import java.io.OutputStream;
 import java.io.PrintWriter;
+import java.net.Socket;
 
 import javax.swing.DefaultListModel;
 import javax.swing.ImageIcon;
@@ -17,17 +18,20 @@ import javax.swing.JList;
 import javax.swing.JOptionPane;
 import javax.swing.JScrollPane;
 
+import com.client.ClientRecive;
 import com.client.dto.RequestDto;
 import com.client.frame.MainFrame;
 import com.google.gson.Gson;
 
 import dto.MakeReqDto;
-
+import lombok.Data;
+@Data
 public class MenuPanel extends InitPanel {
-	public String username1 = "나";
+	public String username = LoginPanel.getInstance().getUsername();
 	private static MenuPanel instance;
 	private String roomname;
 	private DefaultListModel<String> ls = new DefaultListModel<>();
+	private Socket socket = MainFrame.getSocket();
 	Gson gson = new Gson();
 	public static MenuPanel getInstance() {
 		if(instance == null) {
@@ -42,7 +46,8 @@ public class MenuPanel extends InitPanel {
 	
 	public MenuPanel() {
 		mainCard = MainPanel.getMainCard();
-		
+		ClientRecive clientRecive = new ClientRecive(socket);
+		clientRecive.start();
 //		로고 이미지
 		ImageIcon logoIcon = new ImageIcon("./image/logo.png");
 		ImageIcon resizedLogoIcon = new ImageIcon(logoIcon.getImage().getScaledInstance(40, 40, Image.SCALE_SMOOTH));
@@ -58,23 +63,25 @@ public class MenuPanel extends InitPanel {
 			@Override
 			public void mouseClicked(MouseEvent e) { //방만들기 플러스 버튼 누르기
 				roomname=JOptionPane.showInputDialog(null, "제목을 적어주세요 : .", "방 생성", JOptionPane.INFORMATION_MESSAGE); // 방제목 입력하기 
-				ls.addElement(roomname); // 방목록에 roomname 추가하기
-				MakeReqDto makeReqDto = new MakeReqDto(username1,roomname); //login패널 적은 username과 roomname 저장
+				MakeReqDto makeReqDto = new MakeReqDto(username,roomname); //login패널 적은 username과 roomname 저장
 				String joinReqDtoJson = gson.toJson(makeReqDto); // requsetDto 에 저장할 body 저장
 				RequestDto requestDto = new RequestDto("make", joinReqDtoJson);
 				String requestDtoJson = gson.toJson(requestDto); // requestDto 'resourse : make' , 'body :  { roomname : roomname , username : username } (json형태로)' 저장 
-			
+				
 				OutputStream outputStream;
 				try {
-					outputStream = MainFrame.getInstance().getSocket().getOutputStream();
+					outputStream = socket.getOutputStream();
 					PrintWriter out = new PrintWriter(outputStream, true);
 					out.println(requestDtoJson); 
 					System.out.println(requestDtoJson+ "를 서버로 전송"); // 서버로 전송 되는지 확인용
 				} catch (IOException e1) {
 					// TODO Auto-generated catch block
 					e1.printStackTrace();
+				
 				}
 				
+				
+
 			}
 		});
 		plusButton.setForeground(new Color(255, 255, 255));

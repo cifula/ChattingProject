@@ -1,6 +1,5 @@
 package com.client.frame;
 
-import java.io.InputStream;
 import java.net.Socket;
 
 import javax.swing.JFrame;
@@ -14,7 +13,6 @@ public class MainFrame extends JFrame {
 	private static MainFrame instance;
 	@Getter
 	private static Socket socket;
-	private InputStream inputStream;
 	
 	public static MainFrame getInstance() {
 		if(instance == null) {
@@ -27,7 +25,7 @@ public class MainFrame extends JFrame {
 		socket = ClientApplication.getSocket();
 		
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		setBounds(100, 100, 480, 800);
+		setBounds(100, 100, 495, 839);
 		setContentPane(MainPanel.getInstance());
 
 

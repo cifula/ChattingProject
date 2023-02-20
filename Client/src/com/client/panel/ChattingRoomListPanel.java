@@ -24,44 +24,36 @@ import lombok.Getter;
 import lombok.Setter;
 
 @Getter
-public class MenuPanel extends InitPanel {
+public class ChattingRoomListPanel extends InitPanel {
 	
 	
-	private static MenuPanel instance;
+	private static ChattingRoomListPanel instance;
 	
-	public static MenuPanel getInstance() {
+	public static ChattingRoomListPanel getInstance() {
 		if(instance == null) {
-			instance = new MenuPanel();
+			instance = new ChattingRoomListPanel();
 		}
 		
 		return instance;
 	};
 	
-	
-	private CardLayout mainCard;
 	private String roomname;
 	private DefaultListModel<String> ls;
 	private JList<String> roomList;
-	private Gson gson;
 	
-	public MenuPanel() {
-		mainCard = MainPanel.getMainCard();
-		setBackground(kakaoColor);
-		gson = new Gson();
-		
-		
-		
+	public ChattingRoomListPanel() {
 //		로고 이미지
-		ImageIcon logoIcon = new ImageIcon("./image/logo.png");
-		ImageIcon resizedLogoIcon = new ImageIcon(logoIcon.getImage().getScaledInstance(40, 40, Image.SCALE_SMOOTH));
-		JLabel logoLabel = new JLabel(resizedLogoIcon);
+		JLabel logoLabel = new JLabel(addImage("logo.png", 40, 40));
 		add(logoLabel);
 		logoLabel.setBounds(20, 25, 40, 40);
 		
 //		플러스 버튼
-		ImageIcon plusbuttonIcon = new ImageIcon("./image/plusbutton.png");
-		ImageIcon resizedplusbuttonIcon = new ImageIcon(plusbuttonIcon.getImage().getScaledInstance(20, 20, Image.SCALE_SMOOTH));
-		JButton plusButton = new JButton(resizedplusbuttonIcon);
+		JButton plusButton = new JButton(addImage("plusbutton.png", 20, 20));
+		plusButton.setForeground(new Color(255, 255, 255));
+		add(plusButton);
+		plusButton.setBounds(20, 80, 40, 40);
+		plusButton.setBackground(kakaoColor);
+		
 		plusButton.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mouseClicked(MouseEvent e) {
@@ -69,18 +61,16 @@ public class MenuPanel extends InitPanel {
 				sendRequest(new RequestDto("createRoom", roomname));
 			}
 		});
-		plusButton.setForeground(new Color(255, 255, 255));
-		add(plusButton);
-		plusButton.setBounds(20, 80, 40, 40);
-		plusButton.setBackground(new Color(249, 224, 0));
-		plusButton.setBorderPainted(false);
 
-		
+//		채팅방 리스트 패널
 		JScrollPane scrollPane = new JScrollPane();
 		add(scrollPane);
 		scrollPane.setBounds(80, 0, 400, 800);
 		
+		
+//		Room 을 다
 		ls = new DefaultListModel<>();
+		
 		
 		roomList = new JList<>(ls);
 		scrollPane.setViewportView(roomList);

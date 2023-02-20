@@ -6,21 +6,23 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.net.Socket;
+import java.util.ArrayList;
 import java.util.List;
-
-import javax.swing.JLabel;
 
 import com.client.Repository.RoomRepository;
 import com.client.dto.ResponseDto;
 import com.client.entity.ConnectedUser;
 import com.client.entity.Room;
+import com.client.entity.RoomIndex;
 import com.client.entity.User;
 import com.client.panel.ChatroomPanel;
+import com.client.panel.ChattingRoomListPanel;
 import com.client.panel.MainPanel;
-import com.client.panel.MenuPanel;
 import com.google.gson.Gson;
 
+import lombok.Getter;
 import lombok.RequiredArgsConstructor;
+import lombok.Setter;
 
 @RequiredArgsConstructor
 public class ClientRecive extends Thread{
@@ -29,6 +31,9 @@ public class ClientRecive extends Thread{
 	private InputStream inputStream;
 	private Gson gson;
 	private CardLayout mainCard;
+	@Getter
+	@Setter
+	private static List<RoomIndex> roomIndexList;
 	
 	@Override
 	public void run() {
@@ -59,7 +64,8 @@ public class ClientRecive extends Thread{
 						break;
 						
 					case "getRoomList":
-						MenuPanel.getInstance().getLs().clear();
+						roomIndexList = new ArrayList<>();
+						ChattingRoomListPanel.getInstance().getLs().clear();
 						RoomRepository.getInstance().clear();
 						List<String> rooms = gson.fromJson(responseDto.getBody(), List.class);
 						
@@ -70,13 +76,16 @@ public class ClientRecive extends Thread{
 						List<Room> roomList = RoomRepository.getInstance().getRoomList();
 						
 						for (Room room : roomList) {
-							MenuPanel.getInstance().getLs().addElement(room.getRoomname());
+							
+							ChattingRoomListPanel.getInstance().getLs().addElement(room.getRoomname());
+							
+							
 						}
 						
 						break;
 						
 					case "emptyRoom":
-						MenuPanel.getInstance().getLs().addElement(responseDto.getBody());
+						ChattingRoomListPanel.getInstance().getLs().addElement(responseDto.getBody());
 						break;
 							
 					case "joinRoom":

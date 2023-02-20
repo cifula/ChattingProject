@@ -46,12 +46,12 @@ public class ChatroomPanel extends InitPanel {
 	@Setter
 	@Getter
 	private JTextArea contentArea;
-	
-
+	private ConnectedUser connectedUser;
 
 	public ChatroomPanel() {
 		gson = new Gson();
 		mainCard = MainPanel.getMainCard();
+		connectedUser = ConnectedUser.getInstance();
 		
 		setBackground(kakaoColor);
 		

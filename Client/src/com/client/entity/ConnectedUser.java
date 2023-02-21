@@ -1,8 +1,8 @@
 package com.client.entity;
 
-import lombok.Getter;
-import lombok.Setter;
+import lombok.Data;
 
+@Data
 public class ConnectedUser {
 	
 	private static ConnectedUser instance;
@@ -19,12 +19,8 @@ public class ConnectedUser {
 		this.room = new Room();
 	}
 	
-	@Getter
-	@Setter
 	private User user;
 	
-	@Getter
-	@Setter
 	private Room room;
 
 }

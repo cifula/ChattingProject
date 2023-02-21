@@ -6,23 +6,22 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.net.Socket;
-import java.util.ArrayList;
 import java.util.List;
+
+import javax.swing.DefaultListModel;
 
 import com.client.Repository.RoomRepository;
 import com.client.dto.ResponseDto;
 import com.client.entity.ConnectedUser;
 import com.client.entity.Room;
-import com.client.entity.RoomIndex;
 import com.client.entity.User;
-import com.client.panel.ChatroomPanel;
-import com.client.panel.ChattingRoomListPanel;
+import com.client.panel.ChattingroomListPanel;
+import com.client.panel.ChattingroomPanel;
 import com.client.panel.MainPanel;
+import com.client.panel.UserListPanel;
 import com.google.gson.Gson;
 
-import lombok.Getter;
 import lombok.RequiredArgsConstructor;
-import lombok.Setter;
 
 @RequiredArgsConstructor
 public class ClientRecive extends Thread{
@@ -31,9 +30,8 @@ public class ClientRecive extends Thread{
 	private InputStream inputStream;
 	private Gson gson;
 	private CardLayout mainCard;
-	@Getter
-	@Setter
-	private static List<RoomIndex> roomIndexList;
+	private DefaultListModel<String> userListModel;
+	private Room room;
 	
 	@Override
 	public void run() {
@@ -41,31 +39,22 @@ public class ClientRecive extends Thread{
 			inputStream = socket.getInputStream();
 			BufferedReader in = new BufferedReader(new InputStreamReader(inputStream));
 			gson = new Gson();
-			
-		
+			userListModel = new DefaultListModel<>();
+			room = new Room();
 			
 			while(true) {
 				String response = in.readLine();
 				ResponseDto responseDto = gson.fromJson(response, ResponseDto.class);
 				switch(responseDto.getResource()) {
 					case "login":
+						mainCard = MainPanel.getMainCard();
 						User loginUser = gson.fromJson(responseDto.getBody(), User.class);
 						ConnectedUser.getInstance().setUser(loginUser);
-						mainCard = MainPanel.getMainCard();
-						mainCard.show(MainPanel.getInstance(), "menuPanel");
+						mainCard.show(MainPanel.getInstance(), "chattingroomListPanel");
 						break;
 						
-					case "createRoom":
-						Room createdRoom = gson.fromJson(responseDto.getBody(), Room.class);
-						RoomRepository.getInstance().addRoom(createdRoom);
-						ChatroomPanel.getInstance().setRoom(createdRoom);
-						ChatroomPanel.getInstance().getRoomnameLabel().setText(createdRoom.getRoomname());
-						mainCard.show(MainPanel.getInstance(), "chatroomPanel");
-						break;
-						
-					case "getRoomList":
-						roomIndexList = new ArrayList<>();
-						ChattingRoomListPanel.getInstance().getLs().clear();
+					case "updateRoomList":
+						ChattingroomListPanel.getInstance().getRoomListModel().clear();
 						RoomRepository.getInstance().clear();
 						List<String> rooms = gson.fromJson(responseDto.getBody(), List.class);
 						
@@ -76,31 +65,31 @@ public class ClientRecive extends Thread{
 						List<Room> roomList = RoomRepository.getInstance().getRoomList();
 						
 						for (Room room : roomList) {
-							
-							ChattingRoomListPanel.getInstance().getLs().addElement(room.getRoomname());
-							
-							
+							ChattingroomListPanel.getInstance().getRoomListModel().addElement(room.getRoomname());
 						}
 						
 						break;
 						
 					case "emptyRoom":
-						ChattingRoomListPanel.getInstance().getLs().addElement(responseDto.getBody());
+						ChattingroomListPanel.getInstance().getRoomListModel().addElement(responseDto.getBody());
 						break;
-							
+													
 					case "joinRoom":
-						Room joinRoom = gson.fromJson(responseDto.getBody(), Room.class);
-						ChatroomPanel.getInstance().setRoom(joinRoom);
-						mainCard.show(MainPanel.getInstance(), "chatroomPanel");
+						room = gson.fromJson(responseDto.getBody(), Room.class);
+
+						ChattingroomPanel.getInstance().getRoomnameLabel().setText(room.getRoomname());
+						UserListPanel.getInstance().getRoomnameLabel().setText(room.getRoomname());
+						mainCard.show(MainPanel.getInstance(), "chattingroomPanel");
 						break;
 						
-					case "newUserJoin":
-						List<User> userList = gson.fromJson(responseDto.getBody(), List.class);
-						ChatroomPanel.getInstance().getRoom().setUserList(userList);
+					case "updateUserList":
+						userListModel.clear();
+						room = gson.fromJson(responseDto.getBody(), Room.class);
+						userListUpdate(this.room);
 						break;
 						
 					case "sendMessage":
-						ChatroomPanel.getInstance().getContentArea().append(responseDto.getBody() + '\n');
+						ChattingroomPanel.getInstance().getContentArea().append(responseDto.getBody() + '\n');
 						break;
 				}
 			}
@@ -111,6 +100,15 @@ public class ClientRecive extends Thread{
 			e.printStackTrace();
 		}
 		
+	}
+	
+	public void userListUpdate(Room room) {
+		for(User user : room.getUserList()) {
+			userListModel.addElement(user.getUsername());
+		}
+		ChattingroomPanel.getInstance().setRoom(room);
+		UserListPanel.getInstance().setRoom(room);
+		UserListPanel.getInstance().getUserList().setModel(userListModel);
 	}
 
 }

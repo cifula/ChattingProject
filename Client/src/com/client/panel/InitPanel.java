@@ -1,7 +1,6 @@
 package com.client.panel;
 
 
-import java.awt.CardLayout;
 import java.awt.Color;
 import java.awt.Image;
 import java.io.IOException;
@@ -24,7 +23,6 @@ public class InitPanel extends JPanel{
 	public final Color kakaoColor2 = new Color(254, 229, 0);
 	public final Socket socket;
 	public final Gson gson;
-//	public final CardLayout mainCard;
 	
 	public InitPanel() {
 		setLayout(null);
@@ -33,7 +31,6 @@ public class InitPanel extends JPanel{
 		socket = MainFrame.getSocket();
 		gson = new Gson();
 		setBackground(kakaoColor);
-//		mainCard = MainPanel.getMainCard();
 
 	}
 	
@@ -45,7 +42,8 @@ public class InitPanel extends JPanel{
 	}
 	
 //	요청 보내기 메소드
-	public void sendRequest(RequestDto requestDto){
+	public void sendRequest(String resource, String body){
+		RequestDto requestDto = new RequestDto(resource, body);
 		OutputStream outputStream;
 		try {
 			outputStream = socket.getOutputStream();

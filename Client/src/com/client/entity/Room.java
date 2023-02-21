@@ -4,12 +4,12 @@ import java.util.ArrayList;
 import java.util.List;
 
 import lombok.Data;
-import lombok.RequiredArgsConstructor;
 
 @Data
 public class Room {
 	private int roomId;
 	private String roomname;
+	private User roomMaster;
 	
 	private List<User> userList;
 	

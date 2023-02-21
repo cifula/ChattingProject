@@ -3,13 +3,7 @@ import java.io.IOException;
 import java.net.ServerSocket;
 import java.net.Socket;
 
-import entity.Room;
-import repository.RoomRepository;
-
 public class ServerApplication {
-	
-	private Socket socket;
-	
 	public static void main(String[] args) {
 		ServerSocket serverSocket = null;
 		
@@ -21,8 +15,6 @@ public class ServerApplication {
 				Socket socket = serverSocket.accept();
 				ConnectedSocket connectedSocket = new ConnectedSocket(socket);
 				connectedSocket.start();
-				
-				
 			}
 			
 		} catch (IOException e) {

@@ -13,7 +13,7 @@ import lombok.Getter;
 public class ClientApplication {
 	@Getter
 	private static Socket socket;
-	
+
 	public static void main(String[] args) {
 		Runnable runnable = new Runnable() {
 			

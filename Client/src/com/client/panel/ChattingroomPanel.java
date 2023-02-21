@@ -1,8 +1,10 @@
 package com.client.panel;
 
 
-import java.awt.CardLayout;
 import java.awt.Color;
+import java.awt.Font;
+import java.awt.event.KeyAdapter;
+import java.awt.event.KeyEvent;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 
@@ -11,49 +13,38 @@ import javax.swing.JLabel;
 import javax.swing.JScrollPane;
 import javax.swing.JTextArea;
 
-import com.client.dto.RequestDto;
 import com.client.dto.SendMessageDto;
 import com.client.entity.ConnectedUser;
 import com.client.entity.Room;
-import com.google.gson.Gson;
 
-import lombok.Data;
 import lombok.Getter;
 import lombok.Setter;
-import java.awt.Font;
 
-public class ChatroomPanel extends InitPanel {
+public class ChattingroomPanel extends InitPanel {
 	
-	private static ChatroomPanel instance;
+	private static ChattingroomPanel instance;
 	
-	public static ChatroomPanel getInstance() {
+	public static ChattingroomPanel getInstance() {
 		if(instance == null) {
-			instance = new ChatroomPanel();
+			instance = new ChattingroomPanel();
 		}
 		
 		return instance;
 	};
 	
-	private CardLayout mainCard;
-	@Getter
-	private JLabel roomnameLabel;
-	@Setter
-	@Getter
-	private Room room;
-	
-	private Gson gson;
-	
 	@Setter
 	@Getter
 	private JTextArea contentArea;
-	private ConnectedUser connectedUser;
+	
+	@Getter
+	private JLabel roomnameLabel;
+	@Setter
+	private Room room;
 
-	public ChatroomPanel() {
-		gson = new Gson();
-		mainCard = MainPanel.getMainCard();
-		connectedUser = ConnectedUser.getInstance();
-		
+	public ChattingroomPanel() {		
 		setBackground(kakaoColor);
+		
+		room = new Room();
 		
 		// 로고 이미지
 		JLabel logoLabel = new JLabel(addImage("logo.png", 40, 40));
@@ -65,8 +56,7 @@ public class ChatroomPanel extends InitPanel {
 		listButton.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mouseClicked(MouseEvent e) {
-				mainCard.show(MainPanel.getInstance(), "menuPanel");
-				sendRequest(new RequestDto("getRoomList", "pass"));
+				MainPanel.getMainCard().show(MainPanel.getInstance(), "userListPanel");
 			}
 		});
 		
@@ -78,7 +68,6 @@ public class ChatroomPanel extends InitPanel {
 		// 방제목 Label
 		roomnameLabel = new JLabel();
 		roomnameLabel.setFont(new Font("D2Coding", Font.BOLD, 22));
-		roomnameLabel.setText("111");
 		roomnameLabel.setBounds(90, 20, 280, 40);
 		add(roomnameLabel);
 		
@@ -92,7 +81,6 @@ public class ChatroomPanel extends InitPanel {
 		chatContentPanel.setViewportView(contentArea);
 		
 		// 메세지 보내기 패널
-		
 		JScrollPane messagePanel = new JScrollPane();
 		messagePanel.setBounds(0, 680, 390, 120);
 		add(messagePanel);
@@ -105,15 +93,24 @@ public class ChatroomPanel extends InitPanel {
 		sendButton.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mouseClicked(MouseEvent e) {
-				SendMessageDto sendMessageDto = new SendMessageDto(ConnectedUser.getInstance().getUser().getUserId(), room.getRoomId(), messageInput.getText());
-				RequestDto requestDto = new RequestDto("sendMessage", gson.toJson(sendMessageDto));
-				sendRequest(requestDto);
+				SendMessageDto sendMessageDto = new SendMessageDto(ConnectedUser.getInstance().getUser(), room.getRoomId(), messageInput.getText());
+				sendRequest("sendMessage", gson.toJson(sendMessageDto));
 				messageInput.setText("");
 			}
 		});
 		sendButton.setBounds(390, 680, 90, 120);
 		sendButton.setBackground(new Color(255, 255, 255));
 		add(sendButton);
+		
+		// 엔터키 입력
+		sendButton.addKeyListener(new KeyAdapter() {
+			@Override
+			public void keyPressed(KeyEvent VK_ENTER) {
+				SendMessageDto sendMessageDto = new SendMessageDto(ConnectedUser.getInstance().getUser(), room.getRoomId(), messageInput.getText());
+				sendRequest("sendMessage", gson.toJson(sendMessageDto));
+				messageInput.setText("");
+			}
+		});
 		
 		
 		

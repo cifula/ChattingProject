@@ -1,13 +1,10 @@
 package com.client.panel;
 
-import java.awt.CardLayout;
 import java.awt.Color;
-import java.awt.Image;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 
 import javax.swing.DefaultListModel;
-import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JLabel;
 import javax.swing.JList;
@@ -16,32 +13,29 @@ import javax.swing.JScrollPane;
 
 import com.client.Repository.RoomRepository;
 import com.client.dto.RequestDto;
-import com.client.entity.ConnectedUser;
 import com.client.entity.Room;
-import com.google.gson.Gson;
 
 import lombok.Getter;
-import lombok.Setter;
 
 @Getter
-public class ChattingRoomListPanel extends InitPanel {
+public class ChattingroomListPanel extends InitPanel {
 	
 	
-	private static ChattingRoomListPanel instance;
+	private static ChattingroomListPanel instance;
 	
-	public static ChattingRoomListPanel getInstance() {
+	public static ChattingroomListPanel getInstance() {
 		if(instance == null) {
-			instance = new ChattingRoomListPanel();
+			instance = new ChattingroomListPanel();
 		}
 		
 		return instance;
 	};
 	
 	private String roomname;
-	private DefaultListModel<String> ls;
+	private DefaultListModel<String> roomListModel;
 	private JList<String> roomList;
 	
-	public ChattingRoomListPanel() {
+	public ChattingroomListPanel() {
 //		로고 이미지
 		JLabel logoLabel = new JLabel(addImage("logo.png", 40, 40));
 		add(logoLabel);
@@ -58,7 +52,7 @@ public class ChattingRoomListPanel extends InitPanel {
 			@Override
 			public void mouseClicked(MouseEvent e) {
 				roomname = JOptionPane.showInputDialog(null, "방이름을 입력해주세요.", "방이름입력", JOptionPane.INFORMATION_MESSAGE);
-				sendRequest(new RequestDto("createRoom", roomname));
+				sendRequest("createRoom", roomname);
 			}
 		});
 
@@ -67,12 +61,10 @@ public class ChattingRoomListPanel extends InitPanel {
 		add(scrollPane);
 		scrollPane.setBounds(80, 0, 400, 800);
 		
-		
-//		Room 을 다
-		ls = new DefaultListModel<>();
+		roomListModel = new DefaultListModel<>();
 		
 		
-		roomList = new JList<>(ls);
+		roomList = new JList<>(roomListModel);
 		scrollPane.setViewportView(roomList);
 		
 		roomList.addMouseListener(new MouseAdapter() {
@@ -82,13 +74,13 @@ public class ChattingRoomListPanel extends InitPanel {
 					int selectedIndex = roomList.getSelectedIndex();
 					Room selectedRoom = RoomRepository.getInstance().getRoomList().get(selectedIndex);
 					int roomId = selectedRoom.getRoomId();
-					RequestDto requestDto = new RequestDto("joinRoom", gson.toJson(roomId));
-					sendRequest(requestDto);
+					sendRequest("joinRoom", gson.toJson(roomId));
 				}
 			}
 		});
 	
 	}
+	
 
 
 	

@@ -33,6 +33,10 @@ public class RoomRepository {
 		roomList.add(room);
 	}
 	
+	public void removeRoom(Room room) {
+		roomList.remove(room);
+	}
+	
 	public Room findRoomByRoomId(int roomId) {
 		for(Room room : roomList) {
 			if(room.getRoomId() == roomId) {

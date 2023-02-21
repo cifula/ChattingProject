@@ -90,27 +90,36 @@ public class ConnectedSocket extends Thread {
 						break;
 						
 					case "sendMessage":
+						// message 형태 전처리
 						SendMessageDto sendMessageDto = gson.fromJson(requestDto.getBody(), SendMessageDto.class);
 						String message = user.getUsername() + ":" + sendMessageDto.getMessage();
+						
+						// message 보낼 Room 찾기
 						Room toRoom = roomRepository.findRoomByRoomId(sendMessageDto.getRoomId());
 						
+						// 찾은 Room에 "sendMessage", message 전송
 						sendResponseTo(requestDto.getResource(), message, toRoom.getSocketList());
 						break;
 						
 					case "exitRoom":
+						// RoomId로 exitRoom 할 Room 찾기
 						int exitRoomId = Integer.parseInt(requestDto.getBody());
 						Room exitRoom = roomRepository.findRoomByRoomId(exitRoomId);
 						
+						// exitRoom 하는 User가 RoomMaster가 아닐경우
 						if(!exitRoom.getRoomMaster().equals(user)) {
+						// 해당 Room에서 exitRoom 하는 User를 삭제
 							exitRoom.getSocketList().remove(this);
+						// 해당 Room에 존재하는 User들에게 "updateUserList", Update된 Room을 전송	
 							sendResponseTo("updateUserList", getRoomToSend(exitRoom), exitRoom.getSocketList());
+							
+						// exitRoom 하는 User가 RoomMaster일 경우
 						} else if(exitRoom.getRoomMaster().equals(user)) {
+						// 해당 Room을 RoomRepository에서 제거
 							RoomRepository.getInstance().removeRoom(exitRoom);
+						// 모든 User에게 "updateRommList", Update된 RoomList 전송
 							sendResponseTo("updateRoomList", getRoomListToSend(), connectedSocketList);
 						}
-						
-						
-			
 				}
 			}	
 		} catch (IOException e) {
@@ -120,6 +129,7 @@ public class ConnectedSocket extends Thread {
 		
 	}
 	
+	// Response 전송 메소드
 	private void sendResponse(String resource, String body) {
 		ResponseDto responseDto = new ResponseDto(resource, body);
 		try {
@@ -132,6 +142,7 @@ public class ConnectedSocket extends Thread {
 		}
 	}
 	
+	// roomList에 있는 모든 Room을 SendRoomDto로 변환하여 return하는 메소드
 	private String getRoomListToSend() {
 		List<Room> roomList = RoomRepository.getInstance().getRoomList();
 		List<String> roomListToSend = new ArrayList<>();
@@ -145,11 +156,13 @@ public class ConnectedSocket extends Thread {
 		
 	}
 	
+	// Room을 SendRoomDto로 변환하여 return하는 메소드
 	public String getRoomToSend(Room room) {
 		SendRoomDto roomToSend = new SendRoomDto(room);
 		return gson.toJson(roomToSend);
 	}
 	
+	// to에 존재하는 모든 User에게 Response를 전송하는 메소드
 	private void sendResponseTo(String resource, String body, List<ConnectedSocket> to) {
 		for(ConnectedSocket connectedSocket : to) {
 			connectedSocket.sendResponse(resource, body);

@@ -58,12 +58,13 @@ public class ClientRecive extends Thread{
 						RoomRepository.getInstance().clear();
 						List<String> rooms = gson.fromJson(responseDto.getBody(), List.class);
 						
+						// RoomRepository에 RoomList 추가
 						for (String body : rooms) {
 							RoomRepository.getInstance().addRoom(gson.fromJson(body, Room.class));
 						}
 						
-						List<Room> roomList = RoomRepository.getInstance().getRoomList();
 						
+						List<Room> roomList = RoomRepository.getInstance().getRoomList();
 						for (Room room : roomList) {
 							ChattingroomListPanel.getInstance().getRoomListModel().addElement(room.getRoomname());
 						}

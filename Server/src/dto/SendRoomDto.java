@@ -13,11 +13,13 @@ import lombok.Data;
 public class SendRoomDto {
 	private int roomId = 0;
 	private String roomname;
+	private User roomMaster;
 	private List<User> userList;
 	
 	public SendRoomDto(Room room) {
 		roomId = room.getRoomId();
 		roomname = room.getRoomname();
+		roomMaster = room.getRoomMaster();
 		userList = new ArrayList<>();
 		for(ConnectedSocket socket : room.getSocketList()) {
 			userList.add(socket.getUser());

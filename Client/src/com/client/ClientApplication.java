@@ -21,10 +21,9 @@ public class ClientApplication {
 					try {
 						socket = new Socket(ip, port);
 						
-						
 					} catch (UnknownHostException e) {
 						e.printStackTrace();
-						
+
 					} catch (IOException e) {
 						e.printStackTrace();
 						
@@ -35,8 +34,6 @@ public class ClientApplication {
 					
 					ClientRecive clientRecive = new ClientRecive(socket);
 					clientRecive.start();
-					
-
 					
 				} catch (Exception e) {
 					e.printStackTrace();

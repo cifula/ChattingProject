@@ -18,9 +18,17 @@ public class ServerApplication {
 			}
 			
 		} catch (IOException e) {
-			System.out.println("");
+			e.printStackTrace();
 			
 		} finally {
+			if(serverSocket != null) {
+				try {
+					serverSocket.close();
+				} catch (IOException e) {
+					e.printStackTrace();
+				}
+			}
+			
 			System.out.println("서버 종료");
 		}
 

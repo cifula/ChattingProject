@@ -66,6 +66,7 @@ public class UserListPanel extends InitPanel {
 		add(scrollPane);
 				
 		userList = new JList<>();
+		userList.setFont(new Font("D2Coding", Font.BOLD, 17));
 		scrollPane.setViewportView(userList);
 		
 		// 나가기 버튼

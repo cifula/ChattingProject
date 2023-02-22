@@ -79,6 +79,7 @@ public class ChattingroomPanel extends InitPanel {
 		
 		// 메세지 내용 Area
 		contentArea = new JTextArea();
+		contentArea.setFont(new Font("D2Coding", Font.PLAIN, 17));
 		chatContentPanel.setViewportView(contentArea);
 		
 		// 메세지 보내기 패널

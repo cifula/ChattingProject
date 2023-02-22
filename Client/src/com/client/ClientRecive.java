@@ -14,17 +14,16 @@ import com.client.Repository.RoomRepository;
 import com.client.dto.ResponseDto;
 import com.client.entity.ConnectedUser;
 import com.client.entity.Room;
+import com.client.entity.RoomPanel;
 import com.client.entity.User;
 import com.client.frame.MainFrame;
 import com.client.panel.ChattingroomListPanel;
 import com.client.panel.ChattingroomPanel;
-import com.client.panel.InitPanel;
 import com.client.panel.MainPanel;
 import com.client.panel.UserListPanel;
 import com.google.gson.Gson;
 
 import lombok.RequiredArgsConstructor;
-import lombok.Setter;
 
 @RequiredArgsConstructor
 public class ClientRecive extends Thread{
@@ -69,13 +68,15 @@ public class ClientRecive extends Thread{
 						
 						List<Room> roomList = RoomRepository.getInstance().getRoomList();
 						for (Room room : roomList) {
-							ChattingroomListPanel.getInstance().getRoomListModel().addElement(room.getRoomname());
+							ChattingroomListPanel.getInstance().getRoomListModel().addElement(new RoomPanel(room));
 						}
+						
+						ChattingroomListPanel.getInstance().getRoomList().setModel(ChattingroomListPanel.getInstance().getRoomListModel());
 						
 						break;
 						
 					case "emptyRoom":
-						ChattingroomListPanel.getInstance().getRoomListModel().addElement(responseDto.getBody());
+//						ChattingroomListPanel.getInstance().getRoomListModel().addElement(responseDto.getBody());
 						break;
 													
 					case "joinRoom":
@@ -101,7 +102,6 @@ public class ClientRecive extends Thread{
 						break;
 						
 					case "masterExit":
-						System.out.println(responseDto.getResource());
 						MainFrame.getInstance().masterExit();
 						MainPanel.getMainCard().show(MainPanel.getInstance(), "chattingroomListPanel");
 				}

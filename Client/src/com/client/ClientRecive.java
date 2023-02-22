@@ -80,7 +80,10 @@ public class ClientRecive extends Thread{
 													
 					case "joinRoom":
 						room = gson.fromJson(responseDto.getBody(), Room.class);
-
+						
+						userListModel.clear();
+						ChattingroomPanel.getInstance().getContentArea().setText("");
+						
 						ChattingroomPanel.getInstance().getRoomnameLabel().setText(room.getRoomname());
 						UserListPanel.getInstance().getRoomnameLabel().setText(room.getRoomname());
 						userListUpdate(room);

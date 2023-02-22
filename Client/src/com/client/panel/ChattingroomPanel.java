@@ -13,6 +13,7 @@ import javax.swing.JLabel;
 import javax.swing.JScrollPane;
 import javax.swing.JTextArea;
 
+import com.client.ClientRecive;
 import com.client.dto.SendMessageDto;
 import com.client.entity.ConnectedUser;
 import com.client.entity.Room;

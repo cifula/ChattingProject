@@ -4,12 +4,12 @@ import java.awt.Font;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 
-import javax.swing.DefaultListModel;
 import javax.swing.JButton;
 import javax.swing.JLabel;
 import javax.swing.JList;
 import javax.swing.JScrollPane;
 
+import com.client.ClientRecive;
 import com.client.entity.Room;
 
 import lombok.Getter;
@@ -45,7 +45,7 @@ public class UserListPanel extends InitPanel {
 		backButton.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mouseClicked(MouseEvent e) {
-				MainPanel.getMainCard().show(MainPanel.getInstance(), "chatroomPanel");
+				MainPanel.getMainCard().show(MainPanel.getInstance(), "chattingroomPanel");
 			}
 		});
 				

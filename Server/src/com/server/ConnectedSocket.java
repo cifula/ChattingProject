@@ -30,6 +30,7 @@ public class ConnectedSocket extends Thread {
 	private Gson gson;
 	private static List<ConnectedSocket> connectedSocketList = new ArrayList<>();
 	private RoomRepository roomRepository;
+	private int roomId;
 	
 	@Getter
 	private User user;
@@ -72,6 +73,8 @@ public class ConnectedSocket extends Thread {
 						
 						// 생성한 유저에게 생성된 Room 전달 및 생성된 Room으로 joinRoom
 						sendResponse("joinRoom", getRoomToSend(createdRoom));
+						
+						roomId = createdRoom.getRoomId();
 						break;
 						
 					case "joinRoom":
@@ -87,6 +90,8 @@ public class ConnectedSocket extends Thread {
 						
 						// joinRoom 에 입장해있던 기존 User 들에게 "newUserJoin" 및 Update된 Room 전송
 						sendResponseTo("updateUserList", getRoomToSend(joinRoom), joinRoom.getSocketList());
+						
+						roomId = joinRoom.getRoomId();
 						break;
 						
 					case "sendMessage":
@@ -112,9 +117,10 @@ public class ConnectedSocket extends Thread {
 							exitRoom.getSocketList().remove(this);
 						// 해당 Room에 존재하는 User들에게 "updateUserList", Update된 Room을 전송	
 							sendResponseTo("updateUserList", getRoomToSend(exitRoom), exitRoom.getSocketList());
-							
+			
 						// exitRoom 하는 User가 RoomMaster일 경우
 						} else if(exitRoom.getRoomMaster().equals(user)) {
+							sendResponseTo("masterExit", "pass", exitRoom.getSocketList());
 						// 해당 Room을 RoomRepository에서 제거
 							RoomRepository.getInstance().removeRoom(exitRoom);
 						// 모든 User에게 "updateRommList", Update된 RoomList 전송
@@ -123,6 +129,16 @@ public class ConnectedSocket extends Thread {
 				}
 			}	
 		} catch (IOException e) {
+			Room FTUserRoom = roomRepository.findRoomByRoomId(roomId);
+			if(!FTUserRoom.getRoomMaster().equals(user)) {
+				roomRepository.findRoomByRoomId(roomId).getSocketList().remove(roomId);
+				sendResponseTo("updateUserList", getRoomToSend(FTUserRoom), FTUserRoom.getSocketList());
+				
+			} else if(FTUserRoom.getRoomMaster().equals(user)) {
+				sendResponseTo("masterExit", "pass", FTUserRoom.getSocketList());
+				roomRepository.removeRoom(FTUserRoom);
+				sendResponseTo("updateRoomList", getRoomListToSend(), connectedSocketList);
+			}
 			
 		}
 		

@@ -2,11 +2,8 @@ package com.client;
 
 import java.awt.EventQueue;
 import java.io.IOException;
-import java.net.ConnectException;
 import java.net.Socket;
 import java.net.UnknownHostException;
-
-import javax.swing.JOptionPane;
 
 import lombok.Getter;
 

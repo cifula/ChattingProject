@@ -15,13 +15,16 @@ import com.client.dto.ResponseDto;
 import com.client.entity.ConnectedUser;
 import com.client.entity.Room;
 import com.client.entity.User;
+import com.client.frame.MainFrame;
 import com.client.panel.ChattingroomListPanel;
 import com.client.panel.ChattingroomPanel;
+import com.client.panel.InitPanel;
 import com.client.panel.MainPanel;
 import com.client.panel.UserListPanel;
 import com.google.gson.Gson;
 
 import lombok.RequiredArgsConstructor;
+import lombok.Setter;
 
 @RequiredArgsConstructor
 public class ClientRecive extends Thread{
@@ -80,6 +83,7 @@ public class ClientRecive extends Thread{
 
 						ChattingroomPanel.getInstance().getRoomnameLabel().setText(room.getRoomname());
 						UserListPanel.getInstance().getRoomnameLabel().setText(room.getRoomname());
+						userListUpdate(room);
 						mainCard.show(MainPanel.getInstance(), "chattingroomPanel");
 						break;
 						
@@ -92,6 +96,11 @@ public class ClientRecive extends Thread{
 					case "sendMessage":
 						ChattingroomPanel.getInstance().getContentArea().append(responseDto.getBody() + '\n');
 						break;
+						
+					case "masterExit":
+						System.out.println(responseDto.getResource());
+						MainFrame.getInstance().masterExit();
+						MainPanel.getMainCard().show(MainPanel.getInstance(), "chattingroomListPanel");
 				}
 			}
 			
@@ -103,13 +112,18 @@ public class ClientRecive extends Thread{
 		
 	}
 	
-	public void userListUpdate(Room room) {
+	public synchronized void userListUpdate(Room room) {
 		for(User user : room.getUserList()) {
 			userListModel.addElement(user.getUsername());
 		}
 		ChattingroomPanel.getInstance().setRoom(room);
 		UserListPanel.getInstance().setRoom(room);
 		UserListPanel.getInstance().getUserList().setModel(userListModel);
+		
+		UserListPanel.getInstance().getUserList().setSelectedIndex(0);
+		if(UserListPanel.getInstance().getUserList().getSelectedValue().isBlank()) {
+			System.out.println("선택된 값 없음!!");
+		}
 	}
 
 }

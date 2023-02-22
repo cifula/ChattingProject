@@ -188,7 +188,7 @@ public class ConnectedSocket extends Thread {
 	}
 	
 	// Room을 SendRoomDto로 변환하여 return하는 메소드
-	public String getRoomToSend(Room room) {
+	private String getRoomToSend(Room room) {
 		SendRoomDto roomToSend = new SendRoomDto(room);
 		return gson.toJson(roomToSend);
 	}

@@ -24,7 +24,7 @@ public class MainFrame extends JFrame {
 		return instance;
 	}
 	
-	public MainFrame() {
+	private MainFrame() {
 		socket = ClientApplication.getSocket();
 		
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);

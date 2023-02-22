@@ -25,7 +25,6 @@ public class RoomRepository {
 	
 	
 	@Getter
-	@Setter
 	private List<Room> roomList;
 	
 	public void addRoom(Room room) {

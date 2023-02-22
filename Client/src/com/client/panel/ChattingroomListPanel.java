@@ -40,7 +40,7 @@ public class ChattingroomListPanel extends InitPanel {
 	private DefaultListModel<JPanel> roomListModel;
 	private JList<JPanel> roomList;
 	
-	public ChattingroomListPanel() {
+	private ChattingroomListPanel() {
 //		로고 이미지
 		JLabel logoLabel = new JLabel(addImage("logo.png", 40, 40));
 		add(logoLabel);

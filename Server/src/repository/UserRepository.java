@@ -3,9 +3,6 @@ package repository;
 import java.util.ArrayList;
 import java.util.List;
 
-import com.google.gson.Gson;
-
-import entity.Room;
 import entity.User;
 import lombok.Data;
 
@@ -22,11 +19,8 @@ public class UserRepository {
 	}
 	
 	private UserRepository() {
-		gson = new Gson();
 		userList = new ArrayList<>();
 	}
-	
-	private Gson gson;
 	
 	private List<User> userList;
 		
@@ -40,7 +34,6 @@ public class UserRepository {
 				return user;
 			}
 		}
-		
 		return null;
 	}
 }

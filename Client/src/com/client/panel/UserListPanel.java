@@ -34,7 +34,7 @@ public class UserListPanel extends InitPanel {
 	@Setter
 	private Room room;
 	
-	public UserListPanel() {
+	private UserListPanel() {
 		// 로고 이미지
 		JLabel logoLabel = new JLabel(addImage("logo.png", 40, 40));
 		logoLabel.setBounds(20, 20, 40, 40);

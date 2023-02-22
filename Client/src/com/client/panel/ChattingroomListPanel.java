@@ -52,7 +52,11 @@ public class ChattingroomListPanel extends InitPanel {
 			@Override
 			public void mouseClicked(MouseEvent e) {
 				roomname = JOptionPane.showInputDialog(null, "방이름을 입력해주세요.", "방이름입력", JOptionPane.INFORMATION_MESSAGE);
-				sendRequest("createRoom", roomname);
+				if(roomname.isBlank()) {
+					JOptionPane.showMessageDialog(null, "방이름은 공란일 수 없습니다.");
+				} else if (!roomname.isBlank()) {
+					sendRequest("createRoom", roomname);					
+				}
 			}
 		});
 

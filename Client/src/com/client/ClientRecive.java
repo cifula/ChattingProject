@@ -17,8 +17,8 @@ import com.client.entity.Room;
 import com.client.entity.RoomPanel;
 import com.client.entity.User;
 import com.client.frame.MainFrame;
-import com.client.panel.ChattingroomListPanel;
-import com.client.panel.ChattingroomPanel;
+import com.client.panel.ChatroomListPanel;
+import com.client.panel.ChatroomPanel;
 import com.client.panel.MainPanel;
 import com.client.panel.UserListPanel;
 import com.google.gson.Gson;
@@ -52,11 +52,11 @@ public class ClientRecive extends Thread{
 						mainCard = MainPanel.getMainCard();
 						User loginUser = gson.fromJson(responseDto.getBody(), User.class);
 						ConnectedUser.getInstance().setUser(loginUser);
-						mainCard.show(MainPanel.getInstance(), "chattingroomListPanel");
+						mainCard.show(MainPanel.getInstance(), "chatroomListPanel");
 						break;
 						
 					case "updateRoomList":
-						ChattingroomListPanel.getInstance().getRoomListModel().clear();
+						ChatroomListPanel.getInstance().getRoomListModel().clear();
 						RoomRepository.getInstance().clear();
 						List<String> rooms = gson.fromJson(responseDto.getBody(), List.class);
 						
@@ -68,10 +68,10 @@ public class ClientRecive extends Thread{
 						
 						List<Room> roomList = RoomRepository.getInstance().getRoomList();
 						for (Room room : roomList) {
-							ChattingroomListPanel.getInstance().getRoomListModel().addElement(new RoomPanel(room));
+							ChatroomListPanel.getInstance().getRoomListModel().addElement(new RoomPanel(room));
 						}
 						
-						ChattingroomListPanel.getInstance().getRoomList().setModel(ChattingroomListPanel.getInstance().getRoomListModel());
+						ChatroomListPanel.getInstance().getRoomList().setModel(ChatroomListPanel.getInstance().getRoomListModel());
 						
 						break;
 						
@@ -83,12 +83,15 @@ public class ClientRecive extends Thread{
 						room = gson.fromJson(responseDto.getBody(), Room.class);
 						
 						userListModel.clear();
-						ChattingroomPanel.getInstance().getContentArea().setText("");
+						ChatroomPanel.getInstance().getContentArea().setText("");
 						
-						ChattingroomPanel.getInstance().getRoomnameLabel().setText(room.getRoomname());
+						ChatroomPanel.getInstance().getRoomnameLabel().setText(room.getRoomname());
 						UserListPanel.getInstance().getRoomnameLabel().setText(room.getRoomname());
+						
 						userListUpdate(room);
-						mainCard.show(MainPanel.getInstance(), "chattingroomPanel");
+						ChatroomListPanel.getInstance().getMyRoomListModel().addElement(new RoomPanel(room));
+						ChatroomListPanel.getInstance().getMyRoomList().setModel(ChatroomListPanel.getInstance().getMyRoomListModel());
+						mainCard.show(MainPanel.getInstance(), "chatroomPanel");
 						break;
 						
 					case "updateUserList":
@@ -98,12 +101,12 @@ public class ClientRecive extends Thread{
 						break;
 						
 					case "sendMessage":
-						ChattingroomPanel.getInstance().getContentArea().append(responseDto.getBody() + '\n');
+						ChatroomPanel.getInstance().getContentArea().append(responseDto.getBody() + '\n');
 						break;
 						
 					case "masterExit":
 						MainFrame.getInstance().masterExit();
-						MainPanel.getMainCard().show(MainPanel.getInstance(), "chattingroomListPanel");
+						MainPanel.getMainCard().show(MainPanel.getInstance(), "chatroomListPanel");
 				}
 			}
 			
@@ -119,7 +122,7 @@ public class ClientRecive extends Thread{
 		for(User user : room.getUserList()) {
 			userListModel.addElement(user.getUsername());
 		}
-		ChattingroomPanel.getInstance().setRoom(room);
+		ChatroomPanel.getInstance().setRoom(room);
 		UserListPanel.getInstance().setRoom(room);
 		UserListPanel.getInstance().getUserList().setModel(userListModel);
 		

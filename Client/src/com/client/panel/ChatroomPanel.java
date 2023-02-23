@@ -20,13 +20,13 @@ import com.client.entity.Room;
 import lombok.Getter;
 import lombok.Setter;
 
-public class ChattingroomPanel extends InitPanel {
+public class ChatroomPanel extends InitPanel {
 	
-	private static ChattingroomPanel instance;
+	private static ChatroomPanel instance;
 	
-	public static ChattingroomPanel getInstance() {
+	public static ChatroomPanel getInstance() {
 		if(instance == null) {
-			instance = new ChattingroomPanel();
+			instance = new ChatroomPanel();
 		}
 		
 		return instance;
@@ -41,15 +41,21 @@ public class ChattingroomPanel extends InitPanel {
 	@Setter
 	private Room room;
 
-	private ChattingroomPanel() {		
+	private ChatroomPanel() {		
 		setBackground(kakaoColor);
 		
 		room = new Room();
 		
 		// 로고 이미지
-		JLabel logoLabel = new JLabel(addImage("logo.png", 40, 40));
-		logoLabel.setBounds(20, 20, 40, 40);
-		add(logoLabel);
+		JButton backButton = new JButton(addImage("backbutton.png", 40, 40));
+		backButton.addMouseListener(new MouseAdapter() {
+			@Override
+			public void mouseClicked(MouseEvent e) {
+				MainPanel.getMainCard().show(MainPanel.getInstance(), "chatroomListPanel");
+			}
+		});
+		backButton.setBounds(20, 20, 40, 40);
+		add(backButton);
 		
 		// 리스트 버튼
 		JButton listButton = new JButton(addImage("listbutton.png", 30, 30));

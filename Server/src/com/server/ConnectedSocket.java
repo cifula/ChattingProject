@@ -117,46 +117,15 @@ public class ConnectedSocket extends Thread {
 						// RoomId로 exitRoom 할 Room 찾기
 						int exitRoomId = Integer.parseInt(requestDto.getBody());
 						Room exitRoom = roomRepository.findRoomByRoomId(exitRoomId);
-						
-						// exitRoom 하는 User가 RoomMaster가 아닐경우
-						if(!exitRoom.getRoomMaster().equals(user)) {
-						// 해당 Room에서 exitRoom 하는 User를 삭제
-							exitRoom.getSocketList().remove(this);
-						// 해당 Room에 존재하는 User들에게 "updateUserList", Update된 Room을 전송	
-							sendResponseTo("updateUserList", getRoomToSend(exitRoom), exitRoom.getSocketList());
-							sendResponseTo("sendMessage", "[알림] " + user.getUsername() + "님이 퇴장하였습니다.", exitRoom.getSocketList());
-			
-						// exitRoom 하는 User가 RoomMaster일 경우
-						} else if(exitRoom.getRoomMaster().equals(user)) {
-							exitRoom.getSocketList().remove(this);
-							sendResponseTo("masterExit", "pass", exitRoom.getSocketList());
-						// 해당 Room을 RoomRepository에서 제거
-							RoomRepository.getInstance().removeRoom(exitRoom);
-						// 모든 User에게 "updateRommList", Update된 RoomList 전송
-							sendResponseTo("updateRoomList", getRoomListToSend(), connectedSocketList);
-						}
+
+						exitRoom(exitRoom);
 				}
 			}	
 		} catch (SocketException e){
 			Room FTUserRoom = roomRepository.findRoomByRoomId(roomId);
-			if(!(FTUserRoom == null)) {
-				// 강제 종료한 User가 RoomMaster가 아닐 경우
-				if(!FTUserRoom.getRoomMaster().equals(user)) {
-					roomRepository.findRoomByRoomId(roomId).getSocketList().remove(user);
-					sendResponseTo("updateUserList", getRoomToSend(FTUserRoom), FTUserRoom.getSocketList());
-					sendResponseTo("sendMessage", "[알림] " + user.getUsername() + "님이 퇴장하였습니다.", FTUserRoom.getSocketList());
-					
-					// 강제 종료한 User가 RoomMaster일 경우
-				} else if(FTUserRoom.getRoomMaster().equals(user)) {
-					roomRepository.findRoomByRoomId(roomId).getSocketList().remove(user);
-					sendResponseTo("masterExit", "pass", FTUserRoom.getSocketList());
-					roomRepository.removeRoom(FTUserRoom);
-					sendResponseTo("updateRoomList", getRoomListToSend(), connectedSocketList);
-				}
-			}
+			exitRoom(FTUserRoom);
 		} catch (IOException e) {
 			e.printStackTrace();
-			
 		} 
 	}
 	
@@ -198,5 +167,27 @@ public class ConnectedSocket extends Thread {
 		for(ConnectedSocket connectedSocket : to) {
 			connectedSocket.sendResponse(resource, body);
 		}
+	}
+	
+	// Room 나가기 메소드
+	
+	private void exitRoom(Room room) {
+		if(!room.getRoomMaster().equals(user)) {
+			// 해당 Room에서 exitRoom 하는 User를 삭제
+				room.getSocketList().remove(this);
+			// 해당 Room에 존재하는 User들에게 "updateUserList", Update된 Room을 전송	
+				sendResponseTo("updateUserList", getRoomToSend(room), room.getSocketList());
+				sendResponseTo("sendMessage", "[알림] " + user.getUsername() + "님이 퇴장하였습니다.", room.getSocketList());
+
+			// exitRoom 하는 User가 RoomMaster일 경우
+			} else if(room.getRoomMaster().equals(user)) {
+				room.getSocketList().remove(this);
+				sendResponseTo("masterExit", "pass", room.getSocketList());
+			// 해당 Room을 RoomRepository에서 제거
+				RoomRepository.getInstance().removeRoom(room);
+			// 모든 User에게 "updateRommList", Update된 RoomList 전송
+				sendResponseTo("updateRoomList", getRoomListToSend(), connectedSocketList);
+		
+			}
 	}
 }

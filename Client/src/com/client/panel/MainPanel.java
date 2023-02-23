@@ -24,8 +24,8 @@ public class MainPanel extends InitPanel {
 		setLayout(mainCard);
 		
 		add(LoginPanel.getInstance(), "loginPanel");
-		add(ChattingroomListPanel.getInstance(), "chattingroomListPanel");
-		add(ChattingroomPanel.getInstance(), "chattingroomPanel");
+		add(ChatroomListPanel.getInstance(), "chatroomListPanel");
+		add(ChatroomPanel.getInstance(), "chatroomPanel");
 		add(UserListPanel.getInstance(), "userListPanel");
 		
 		mainCard.show(this, "loginPanel");

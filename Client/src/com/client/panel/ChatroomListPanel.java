@@ -1,5 +1,6 @@
 package com.client.panel;
 
+import java.awt.CardLayout;
 import java.awt.Color;
 import java.awt.Component;
 import java.awt.Font;
@@ -16,21 +17,20 @@ import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.ListSelectionModel;
 
-import com.client.Repository.RoomRepository;
 import com.client.entity.Room;
 import com.client.entity.RoomPanel;
 
 import lombok.Getter;
 
 @Getter
-public class ChattingroomListPanel extends InitPanel {
+public class ChatroomListPanel extends InitPanel {
 	
 	
-	private static ChattingroomListPanel instance;
+	private static ChatroomListPanel instance;
 	
-	public static ChattingroomListPanel getInstance() {
+	public static ChatroomListPanel getInstance() {
 		if(instance == null) {
-			instance = new ChattingroomListPanel();
+			instance = new ChatroomListPanel();
 		}
 		
 		return instance;
@@ -38,20 +38,43 @@ public class ChattingroomListPanel extends InitPanel {
 	
 	private String roomname;
 	private DefaultListModel<JPanel> roomListModel;
+	private DefaultListModel<JPanel> myRoomListModel;
 	private JList<JPanel> roomList;
+	private JList<JPanel> myRoomList;
+	private InitPanel chatListPane;
+	private CardLayout chatListCard;
 	
-	private ChattingroomListPanel() {
-//		로고 이미지
-		JLabel logoLabel = new JLabel(addImage("logo.png", 40, 40));
-		add(logoLabel);
-		logoLabel.setBounds(20, 25, 40, 40);
+	private ChatroomListPanel() {
+		setBackground(kakaoGrayColor);
+//		전체 채팅리스트 버튼
+		JButton chatroomlistButton = new JButton(addImage("chatroomlist.png", 30, 30));
+		chatroomlistButton.addMouseListener(new MouseAdapter() {
+			@Override
+			public void mouseClicked(MouseEvent e) {
+				chatListCard.show(chatListPane, "allChatList");
+			}
+		});
+		chatroomlistButton.setBackground(kakaoGrayColor);
+		chatroomlistButton.setBounds(20, 40, 40, 40);
+		add(chatroomlistButton);
+		
+//		내채팅방 리스트 버튼
+		JButton myChatroomlistButton = new JButton(addImage("mychatroomlist.png", 30, 30));
+		myChatroomlistButton.addMouseListener(new MouseAdapter() {
+			@Override
+			public void mouseClicked(MouseEvent e) {
+				chatListCard.show(chatListPane, "myChatList");
+			}
+		});
+		myChatroomlistButton.setBackground(kakaoGrayColor);
+		myChatroomlistButton.setBounds(20, 100, 40, 40);
+		add(myChatroomlistButton);
 		
 //		플러스 버튼
 		JButton plusButton = new JButton(addImage("plusbutton.png", 20, 20));
-		plusButton.setForeground(new Color(255, 255, 255));
+		plusButton.setBackground(kakaoGrayColor);
+		plusButton.setBounds(20, 160, 40, 40);
 		add(plusButton);
-		plusButton.setBounds(20, 80, 40, 40);
-		plusButton.setBackground(kakaoColor);
 		
 		plusButton.addMouseListener(new MouseAdapter() {
 			@Override
@@ -68,11 +91,21 @@ public class ChattingroomListPanel extends InitPanel {
 				}
 			}
 		});
+		
+		chatListPane = new InitPanel();
+		chatListPane.setBounds(80, 0, 400, 800);
+		add(chatListPane);
+		chatListCard = new CardLayout();
+		chatListPane.setLayout(chatListCard);
+		chatListCard.show(chatListPane, "allChatList");
+		
+		
+		
 
-//		채팅방 리스트 패널
+//		전체 채팅방 리스트 패널
 		JScrollPane scrollPane = new JScrollPane();
-		scrollPane.setBounds(80, 0, 400, 800);
-		add(scrollPane);
+		scrollPane.setBounds(0, 0, 400, 800);
+		chatListPane.add(scrollPane, "allChatList");
 		
 		roomListModel = new DefaultListModel<>();
 		
@@ -98,7 +131,40 @@ public class ChattingroomListPanel extends InitPanel {
 				}
 			}
 		});
+		
+		// 내채팅방 리스트 패널
+		JScrollPane scrollPane2 = new JScrollPane();
+		scrollPane2.setBounds(0, 0, 400, 800);
+		chatListPane.add(scrollPane2, "myChatList");
+		
+		myRoomListModel = new DefaultListModel<>();
+		
+		
+		myRoomList = new JList<>();
+		
+		myRoomList.setCellRenderer(new MyCellRenderer());
+		myRoomList.setSelectionMode(ListSelectionModel.MULTIPLE_INTERVAL_SELECTION);
+		
+		myRoomList.setFont(new Font("D2Coding", Font.BOLD, 17));
+		
+		scrollPane2.setViewportView(myRoomList);
+		
+		myRoomList.addMouseListener(new MouseAdapter() {
+			@Override
+			public void mouseClicked(MouseEvent e) {
+				if(e.getClickCount() == 2) {
+					RoomPanel selectedRoomPanel = (RoomPanel) roomList.getSelectedValue();
+					Room selectedRoom = selectedRoomPanel.getRoom();
+					System.out.println(selectedRoom.toString());
+					int roomId = selectedRoom.getRoomId();
+					sendRequest("joinRoom", gson.toJson(roomId));
+				}
+			}
+		});
+		
 	}
+	
+	
 	
 	private static class MyCellRenderer extends DefaultListCellRenderer {
 	    @Override

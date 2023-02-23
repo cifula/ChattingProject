@@ -20,13 +20,13 @@ import com.client.entity.Room;
 import lombok.Getter;
 import lombok.Setter;
 
-public class ChattingroomPanel extends InitPanel {
+public class ChatroomPanel extends InitPanel {
 	
-	private static ChattingroomPanel instance;
+	private static ChatroomPanel instance;
 	
-	public static ChattingroomPanel getInstance() {
+	public static ChatroomPanel getInstance() {
 		if(instance == null) {
-			instance = new ChattingroomPanel();
+			instance = new ChatroomPanel();
 		}
 		
 		return instance;
@@ -41,7 +41,7 @@ public class ChattingroomPanel extends InitPanel {
 	@Setter
 	private Room room;
 
-	private ChattingroomPanel() {		
+	private ChatroomPanel() {		
 		setBackground(kakaoColor);
 		
 		room = new Room();

@@ -45,7 +45,7 @@ public class UserListPanel extends InitPanel {
 		backButton.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mouseClicked(MouseEvent e) {
-				MainPanel.getMainCard().show(MainPanel.getInstance(), "chattingroomPanel");
+				MainPanel.getMainCard().show(MainPanel.getInstance(), "chatroomPanel");
 			}
 		});
 				
@@ -75,7 +75,7 @@ public class UserListPanel extends InitPanel {
 			@Override
 			public void mouseClicked(MouseEvent e) {
 				sendRequest("exitRoom", gson.toJson(room.getRoomId()));
-				MainPanel.getMainCard().show(MainPanel.getInstance(), "chattingroomListPanel");
+				MainPanel.getMainCard().show(MainPanel.getInstance(), "chatroomListPanel");
 			}
 		});
 		exitButton.setBounds(410, 740, 40, 40);

@@ -23,14 +23,14 @@ import com.client.entity.RoomPanel;
 import lombok.Getter;
 
 @Getter
-public class ChattingroomListPanel extends InitPanel {
+public class ChatroomListPanel extends InitPanel {
 	
 	
-	private static ChattingroomListPanel instance;
+	private static ChatroomListPanel instance;
 	
-	public static ChattingroomListPanel getInstance() {
+	public static ChatroomListPanel getInstance() {
 		if(instance == null) {
-			instance = new ChattingroomListPanel();
+			instance = new ChatroomListPanel();
 		}
 		
 		return instance;
@@ -40,7 +40,7 @@ public class ChattingroomListPanel extends InitPanel {
 	private DefaultListModel<JPanel> roomListModel;
 	private JList<JPanel> roomList;
 	
-	private ChattingroomListPanel() {
+	private ChatroomListPanel() {
 //		로고 이미지
 		JLabel logoLabel = new JLabel(addImage("logo.png", 40, 40));
 		add(logoLabel);
@@ -92,7 +92,6 @@ public class ChattingroomListPanel extends InitPanel {
 				if(e.getClickCount() == 2) {
 					RoomPanel selectedRoomPanel = (RoomPanel) roomList.getSelectedValue();
 					Room selectedRoom = selectedRoomPanel.getRoom();
-					System.out.println(selectedRoom.toString());
 					int roomId = selectedRoom.getRoomId();
 					sendRequest("joinRoom", gson.toJson(roomId));
 				}

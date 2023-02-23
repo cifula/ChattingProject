@@ -15,9 +15,5 @@ public class RoomPanel extends JPanel {
         JLabel label = new JLabel(room.getRoomname());
         add(label);
     }
-
-    public void doSomething() {
-        System.out.println("Panel clicked: " + ((JLabel) getComponent(0)).getText());
-    }
 }
 

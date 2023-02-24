@@ -40,6 +40,8 @@ public class ChatroomPanel extends InitPanel {
 	private JLabel roomnameLabel;
 	@Setter
 	private Room room;
+	@Getter
+	private JScrollPane chatContentPanel;
 
 	private ChatroomPanel() {		
 		setBackground(kakaoColor);
@@ -72,14 +74,16 @@ public class ChatroomPanel extends InitPanel {
 		add(roomnameLabel);
 		
 		// 메세지 내용 패널
-		JScrollPane chatContentPanel = new JScrollPane();
+		chatContentPanel = new JScrollPane();
 		chatContentPanel.setBounds(0, 80, 480, 600);
 		add(chatContentPanel);
 		
 		// 메세지 내용 Area
 		contentArea = new JTextArea();
 		contentArea.setFont(new Font("D2Coding", Font.PLAIN, 17));
+		contentArea.setEditable(false);
 		chatContentPanel.setViewportView(contentArea);
+		
 		
 		// 메세지 보내기 패널
 		JScrollPane messagePanel = new JScrollPane();

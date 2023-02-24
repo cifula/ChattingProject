@@ -9,6 +9,7 @@ import java.net.Socket;
 import java.util.List;
 
 import javax.swing.DefaultListModel;
+import javax.swing.JScrollPane;
 
 import com.client.Repository.RoomRepository;
 import com.client.dto.ResponseDto;
@@ -98,7 +99,9 @@ public class ClientRecive extends Thread{
 						break;
 						
 					case "sendMessage":
+						JScrollPane scrollPane = ChatroomPanel.getInstance().getChatContentPanel();
 						ChatroomPanel.getInstance().getContentArea().append(responseDto.getBody() + '\n');
+						scrollPane.getVerticalScrollBar().setValue(scrollPane.getVerticalScrollBar().getMaximum());
 						break;
 						
 					case "masterExit":
